@@ -15,7 +15,7 @@ std::vector<Coord> Path::GetPath() {
 	return path_;
 }
 
-bool Path::execute() {
+bool Path::Execute() {
 	bns::Bns *bns_instance = bns::Bns::getInstance();
 	for (auto const &element : path_) {
 		bns_instance->Move(bns_instance->GetPlayer(),

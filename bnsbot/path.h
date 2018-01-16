@@ -11,6 +11,6 @@ namespace bot {
 	public:
 		Path(std::vector<Coord>);
 		std::vector<Coord> GetPath();
-		bool execute();
+		bool Execute();
 	};
 }

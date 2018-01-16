@@ -245,7 +245,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 			};
 			//bns->Move(bns->GetPlayer(), -53460.5, 5289.35, 9982.39);
 			Command *p = new Path(v);
-			p->execute();
+			p->Execute();
 			Sleep(250);
 		}
 		else if (GetAsyncKeyState(VK_NUMPAD5)) {
