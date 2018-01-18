@@ -21,10 +21,10 @@ Bns::Bns() {
 	base_shipping_ = (uintptr_t)GetModuleHandle(L"bsengine_shipping64.dll");
 	base_player_ = GetBasePlayer();
 
-	SendPacket = (sigs::SendPacket)(base_client_ + 0xF911E0);
-	Move = (sigs::Move)(base_shipping_ + 0x1DED1D0);
-	SendAction = (sigs::SendAction)(base_client_ + 0x5444D0);
-	ObjectCoord = (sigs::ObjectCoord)(base_shipping_ + 0xA242E0);
+	SendPacket = (sigs::SendPacket)(base_client_ + 0xFB9D60);
+	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
+	SendAction = (sigs::SendAction)(base_client_ + 0x1A8180); // Mouse and F
+	ObjectCoord = (sigs::ObjectCoord)(base_shipping_ + 0xA242E0); // Obsolete
 
 	item.insert(std::pair<char *, char *>("\xA\xC", "Moonstone"));
 }
@@ -34,7 +34,7 @@ Bns::~Bns() {
 }
 
 uintptr_t Bns::GetBasePlayer() {
-	BYTE *pattern = (BYTE *)
+	const BYTE *pattern = (BYTE *)
 		"\x48\x8B\x05\x7B\xC2\x0B\x03"  // mov rax, qword ptr ds:[ADR]
 		"\x48\x8B\x90\x84\x05\x00\x00"  // mov rdx, qword ptr ds:[rax+584]
 		"\x48\x8B\x02"				    // mov rax, qword ptr ds:[rdx]

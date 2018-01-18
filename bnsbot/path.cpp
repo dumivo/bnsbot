@@ -17,13 +17,33 @@ std::vector<Coord> Path::GetPath() {
 
 bool Path::Execute() {
 	bns::Bns *bns_instance = bns::Bns::getInstance();
-	for (auto const &element : path_) {
+
+	// player address shouldn't change within a path-command.
+	uintptr_t player = bns_instance->GetPlayer();
+
+	size_t i = 0;
+	while (i < path_.size()) {
+		auto const &element = path_[i];
+		printf("Moving to: (%f, %f, %f)\n", element.x, element.y, element.z);
+		bns_instance->Move(player, element.x, element.y, element.z);
+		
+		// Block until player reached destination.
+		while (*(bool *)(player + 0x23C8)) {
+			Sleep(50);
+		}
+
+		// TODO: Listen on external events like suspend or stop.
+		i++;
+		Sleep(1000);
+	}
+
+	/*for (auto const &element : path_) {
 		bns_instance->Move(bns_instance->GetPlayer(),
 			element.x,
 			element.y,
 			element.z);
 
 		Sleep(1000);
-	}
+	}*/
 	return false;
 }

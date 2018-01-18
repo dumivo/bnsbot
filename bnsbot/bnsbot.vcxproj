@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bns.h" />
+    <ClInclude Include="combat.h" />
     <ClInclude Include="command.h" />
     <ClInclude Include="coord.h" />
     <ClInclude Include="Memory.h" />

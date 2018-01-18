@@ -51,10 +51,10 @@ DWORD WINAPI MainThread(LPVOID param) {
 	printf("Base address: %p\n", (void *)base);
 	printf("Send function: %p\n", (void *)Func);
 
-	uintptr_t rcx = *(uintptr_t *)(base + 0x017E23A8);
+	uintptr_t rcx = *(uintptr_t *)(base + 0x01816148);
 	printf("rcx: %p\n", (void *)rcx);
 
-	uintptr_t rdx = *(uintptr_t *)(*(uintptr_t *)(base + 0x017E0180) + 0x48);
+	uintptr_t rdx = *(uintptr_t *)(*(uintptr_t *)(base + 0x018140E0) + 0x48);
 	printf("rdx: %p\n", (void *)rdx);
 
 	uintptr_t base_shipping = (uintptr_t)GetModuleHandle(L"bsengine_shipping64.dll");
@@ -198,11 +198,6 @@ DWORD WINAPI MainThread(LPVOID param) {
 	Detour_Ex->Hook();
 	Move2_orig = Detour_Ex->GetOriginal<oMove2>();
 
-	std::shared_ptr<PLH::Detour> Detour_Ex2(new PLH::Detour);
-	Detour_Ex2->SetupHook((BYTE *)bns->ObjectCoord, (BYTE *)hkObjectCoord); //can cast to byte* to
-	Detour_Ex2->Hook();
-	ObjectCoord_orig = Detour_Ex2->GetOriginal<bns::sigs::ObjectCoord>();
-
 	while (!GetAsyncKeyState(VK_END)) {
 		if (GetAsyncKeyState(VK_NUMPAD0)) {
 				printf("Do something..\n");
@@ -269,7 +264,6 @@ DWORD WINAPI MainThread(LPVOID param) {
 
 	printf("Quitting.\n");
 	Detour_Ex->UnHook();
-	Detour_Ex2->UnHook();
 	FreeConsole();
 	FreeLibraryAndExitThread((HMODULE)param, 0);
 	return 0;

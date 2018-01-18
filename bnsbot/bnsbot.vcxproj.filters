@@ -50,5 +50,8 @@
     <ClInclude Include="coord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="combat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
