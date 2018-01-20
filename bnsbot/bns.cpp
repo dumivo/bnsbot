@@ -23,8 +23,19 @@ Bns::Bns() {
 
 	SendPacket = (sigs::SendPacket)(base_client_ + 0xFB9D60);
 	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
-	SendAction = (sigs::SendAction)(base_client_ + 0x1A8180); // Mouse and F
+	SendAction = (sigs::SendAction)(base_client_ + 0x5313D0); // Mouse and F
+	SendKeyboard = (sigs::SendKeyboard)(base_client_ + 0x5322C0);
 	ObjectCoord = (sigs::ObjectCoord)(base_shipping_ + 0xA242E0); // Obsolete
+
+	UpdateTargetHP = (sigs::UpdateTargetHP) Pattern(base_client_, 0xB000000,
+		(BYTE *)"\x48\x89\x5C\x24\x18\x48\x89\x7C\x24\x20\x41\x54\x41\x55\x41\x56\x48\x83\xEC\x20\x48\x8D\x79\x18\x48\x89\x51\x38",
+		"xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	UpdateKeybdDevice = (sigs::UpdateKeybdDevice) Pattern(base_client_, 0xB000000,
+		(BYTE *)"\x40\x53\x57\x41\x54\x41\x55\x48\x00\x00\x00\x00\x00\x00\x48\x8B\xD9\x00\x00\x00\x00\x00\x00\x00\x00\x33\xD2",
+		"xxxxxxxx??????xxx????????xx");
+	InventoryEvent = (sigs::InventoryEvent) Pattern(base_client_, 0xB000000,
+		(BYTE *)"\x48\x89\x5C\x24\x08\x48\x89\x74\x24\x10\x57\x48\x83\xEC\x20\x48\x8B\x05\xFA\x34\x3B\x01\x41\x0F\xB6\xF8\x48\x8B\xF2",
+		"xxxxxxxxxxxxxxxxxx????xxxxxxx");
 
 	item.insert(std::pair<char *, char *>("\xA\xC", "Moonstone"));
 }
@@ -35,7 +46,7 @@ Bns::~Bns() {
 
 uintptr_t Bns::GetBasePlayer() {
 	const BYTE *pattern = (BYTE *)
-		"\x48\x8B\x05\x7B\xC2\x0B\x03"  // mov rax, qword ptr ds:[ADR]
+		"\x48\x8B\x05\x00\x00\x00\x00"  // mov rax, qword ptr ds:[ADR]
 		"\x48\x8B\x90\x84\x05\x00\x00"  // mov rdx, qword ptr ds:[rax+584]
 		"\x48\x8B\x02"				    // mov rax, qword ptr ds:[rdx]
 		"\x48\x8B\x50\x68"			    // mov rdx, qword ptr ds:[rax+68]

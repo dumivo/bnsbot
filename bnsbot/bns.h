@@ -5,10 +5,15 @@
 
 namespace bns {
 	namespace sigs {
-		typedef void *(__fastcall *SendPacket)(void *rcx, void *rdx, void *r8);
-		typedef bool *(__fastcall *Move)(uintptr_t rcx, float xmm1, float xmm2, float xmm3);
-		typedef void *(__fastcall *SendAction)(DWORD rcx, DWORD rdx, DWORD r8);
+		typedef void *(__fastcall *SendPacket)(void *rcx, void *rdx, void *data);
+		typedef bool *(__fastcall *Move)(uintptr_t player, float x, float y, float z);
+		typedef void *(__fastcall *SendAction)(uintptr_t rcx, int rdx, int r8);
+		typedef void *(__fastcall *SendKeyboard)(uintptr_t rcx, int rdx, int r8);
 		typedef void *(__fastcall *ObjectCoord)(uintptr_t rcx, uintptr_t rdx);
+		typedef void  (__fastcall *UpdateTargetHP)(uintptr_t rcx, unsigned long hp, uintptr_t r8);
+		typedef void *(__fastcall *UpdateKeybdDevice)(uintptr_t rcx, uintptr_t rdx, uintptr_t r8);
+		typedef void *(__fastcall *InventoryEvent)(uintptr_t intenvory_slot, unsigned long slot_id, int r8);
+
 	}
 
 	class Bns {
@@ -38,5 +43,9 @@ namespace bns {
 		sigs::SendPacket SendPacket;
 		sigs::SendAction SendAction;
 		sigs::ObjectCoord ObjectCoord;
+		sigs::SendKeyboard SendKeyboard;
+		sigs::UpdateTargetHP UpdateTargetHP;
+		sigs::UpdateKeybdDevice UpdateKeybdDevice;
+		sigs::InventoryEvent InventoryEvent;
 	};
 }

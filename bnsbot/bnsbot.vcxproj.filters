@@ -30,6 +30,15 @@
     <ClCompile Include="path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sensors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory.h">
@@ -51,6 +60,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="combat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sensors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@
 #include "bns.h"
 #include "coord.h"
 #include "path.h"
+#include "bot.h"
 
 #define offset 0xF911E0;
 
@@ -198,6 +199,17 @@ DWORD WINAPI MainThread(LPVOID param) {
 	Detour_Ex->Hook();
 	Move2_orig = Detour_Ex->GetOriginal<oMove2>();
 
+	printf("===== BNSFUNCTIONS =====\n");
+	printf("SendPacket = %p\n", bns->SendPacket);
+	printf("Move = %p\n", bns->Move);
+	printf("SendAction = %p\n", bns->SendAction);
+	printf("SendKeyboard = %p\n", bns->SendKeyboard);
+	printf("UpdateKeybdDevice = %p\n", bns->UpdateKeybdDevice);
+	printf("InventoryEvent = %p\n", bns->InventoryEvent);
+	printf("===== BNSFUNCTIONS =====\n");
+
+	bot::BotMain(NULL);
+
 	while (!GetAsyncKeyState(VK_END)) {
 		if (GetAsyncKeyState(VK_NUMPAD0)) {
 				printf("Do something..\n");
@@ -244,7 +256,16 @@ DWORD WINAPI MainThread(LPVOID param) {
 			Sleep(250);
 		}
 		else if (GetAsyncKeyState(VK_NUMPAD5)) {
-			printf("Reset player structure\n");
+			bns->SendKeyboard(0x00000000FC5B3FE0, 1, 5);
+			Sleep(500);
+			bns->SendKeyboard(0x00000000FC5B3FE0, 1, 4);
+			Sleep(250);
+			for (int i = 0; i < 400; i++) {
+				bns->SendAction(0x00000000FC5B3FE0, 1, 2);
+				Sleep(20);
+			}
+			Sleep(200);
+			
 		}
 		else if (GetAsyncKeyState(VK_NUMPAD6)) {
 			printf("Sending\n");

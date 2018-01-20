@@ -12,7 +12,7 @@
 #include <assert.h>
 #pragma comment(lib,"Dbghelp.lib")
 #pragma comment(lib,"capstone.lib")
-#define PLH_SHOW_DEBUG_MESSAGES 1 //To print messages even in release
+#define PLH_SHOW_DEBUG_MESSAGES 0 //To print messages even in release
 
 namespace PLH {
 	namespace Tools
