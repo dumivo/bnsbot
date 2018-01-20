@@ -149,6 +149,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="path.cpp" />
+    <ClCompile Include="Script.cpp" />
     <ClCompile Include="sensors.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="Memory.h" />
     <ClInclude Include="path.h" />
     <ClInclude Include="PolyHook.h" />
+    <ClInclude Include="Script.h" />
     <ClInclude Include="sensors.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -23,4 +23,39 @@ void bot::BotMain(LPVOID param) {
 	// Anyways, just don't use std::thread.
 	CreateThread(0, 0, bot::ControllerThread, NULL, 0, 0);
 	ChangeState(bot::Ready);
+
+	while (true) {
+		while (bot::bot_state == bot::Running) {
+
+			// TODO: Implement functions doing these steps below.
+
+			// Make "scripts" for specific bosses including moving,
+			// killing, and looting said bosses.
+
+			// Find a way (opcodes) to purchase orbs and spin the wheel.
+
+			// Find a way to handle loading screens (either by using sensors)
+			// or just waiting something like 30s each.
+
+			// Enter Naksun
+			// (loading screen)
+			// use f13 ticket
+			// enter f13
+			// (loading screen)
+			// Purchase orb
+			// Spin wheel
+			// move fujin
+			// kill fujin
+			// loot fujin
+			// move robot
+			// kill robot
+			// loot robot
+			// move naksun
+			// kill naksun
+			// loot naksun
+			// exit naksun
+			// (loading screen)
+		}
+		Sleep(500);
+	}
 }
