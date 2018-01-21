@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "Memory.h"
-#include "PolyHook.h"
 #include "bns.h"
 #include "coord.h"
 #include "path.h"
@@ -24,27 +23,34 @@ oMove2 Move2_orig;
 typedef void *(__fastcall *oSend)(DWORD rcx, DWORD rdx, DWORD r8);
 oSend Send;
 
-bns::sigs::ObjectCoord ObjectCoord_orig;
-
-bool hkObjectCoord(uintptr_t rcx, uintptr_t rdx) {
-	float *coords = (float*)(rdx + 0x30);
-	//printf("%p = (%f, %f, %f)\n", (void *)rdx, coords[0], coords[1], coords[2]);
-	return ObjectCoord_orig(rcx, rdx);
-}
-
-bool hkMove2(DWORD rcx, float xmm1, float xmm2, float xmm3) {
-	printf("hooky %p\n", rcx);
-	return Move2_orig(rcx, xmm1, xmm2, xmm3);
-}
 
 DWORD WINAPI MainThread(LPVOID param) {
 	printf("Created MainThread.\n");
+
 
 	bns::Bns *bns = bns::Bns::getInstance();
 	if (!bns) {
 		printf("Error getting Bns instance\n");
 		return -1;
 	}
+
+	printf("===== BNSFUNCTIONS =====\n");
+	printf("SendPacket = %p\n", bns->SendPacket);
+	printf("Move = %p\n", bns->Move);
+	printf("SendAction = %p\n", bns->SendAction);
+	printf("SendKeyboard = %p\n", bns->SendKeyboard);
+	printf("UpdateKeybdDevice = %p\n", bns->UpdateKeybdDevice);
+	printf("InventoryEvent = %p\n", bns->InventoryEvent);
+	printf("===== BNSFUNCTIONS =====\n");
+	printf("===== ADDRESSES =====\n");
+	printf("player = %p\n", bns->GetPlayer());
+	printf("===== ADDRESSES =====\n");
+	bot::BotMain(NULL);
+
+	//Detour_Ex->UnHook();
+	FreeConsole();
+	FreeLibraryAndExitThread((HMODULE)param, 0);
+	return 0;
 
 	uintptr_t base = (uintptr_t)GetModuleHandle(0);
 	Func = (oFunc)(base + 0xF911E0);
@@ -194,10 +200,10 @@ DWORD WINAPI MainThread(LPVOID param) {
 	printf("pPlayer: %p\n", (void *)pPlayer);
 	printf("currentCoords = %p (%f,%f,%f)\n", currentCoords, currentCoords[0], currentCoords[1], currentCoords[2]);
 
-	std::shared_ptr<PLH::Detour> Detour_Ex(new PLH::Detour);
+	/*std::shared_ptr<PLH::Detour> Detour_Ex(new PLH::Detour);
 	Detour_Ex->SetupHook((BYTE *)Move2, (BYTE *)hkMove2); //can cast to byte* to
 	Detour_Ex->Hook();
-	Move2_orig = Detour_Ex->GetOriginal<oMove2>();
+	Move2_orig = Detour_Ex->GetOriginal<oMove2>();*/
 
 	printf("===== BNSFUNCTIONS =====\n");
 	printf("SendPacket = %p\n", bns->SendPacket);
@@ -243,7 +249,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 		else if (GetAsyncKeyState(VK_NUMPAD4)) {
 			printf("boomo\n");
 			using namespace bot;
-			std::vector<Coord> v = {
+			std::vector<coord::Coord> v = {
 				{ -53460.5f, 5289.35f, 9982.39f },
 				{ -53360.5f, 5289.35f, 9982.39f },
 				{ -53360.5f, 5189.35f, 9982.39f },
@@ -284,7 +290,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 	}
 
 	printf("Quitting.\n");
-	Detour_Ex->UnHook();
+	//Detour_Ex->UnHook();
 	FreeConsole();
 	FreeLibraryAndExitThread((HMODULE)param, 0);
 	return 0;
@@ -305,10 +311,10 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 
 		CreateThread(0, 0, MainThread, hinstDLL, 0, 0);
 
-		DisableThreadLibraryCalls(hinstDLL);
+		// DisableThreadLibraryCalls(hinstDLL);
 	}
 	else if (fdwReason == DLL_PROCESS_ATTACH) {
-		FreeConsole();
+		//FreeConsole();
 	}
 
 	return true;

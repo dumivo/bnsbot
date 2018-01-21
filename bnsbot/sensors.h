@@ -9,14 +9,15 @@ typedef void *(__fastcall *UpdateKeybdDevice)(uintptr_t rcx, uintptr_t rdx, uint
 typedef void *(__fastcall *InventoryEvent)(uintptr_t intenvory_slot, unsigned long slot_id, int r8);
 
 namespace hook {
-	bns::sigs::UpdateTargetHP oUpdateTargetHP;
-	bns::sigs::UpdateKeybdDevice oUpdateKeybdDevice;
-	bns::sigs::InventoryEvent oInventoryEvent;
+	static bns::sigs::UpdateTargetHP oUpdateTargetHP;
+	static bns::sigs::UpdateKeybdDevice oUpdateKeybdDevice;
+	static bns::sigs::InventoryEvent oInventoryEvent;
 
 	void UpdateTargetHP(uintptr_t rcx, unsigned long hp, uintptr_t r8);
 	void *UpdateKeybdDevice(uintptr_t rcx, uintptr_t rdx, uintptr_t r8);
 	void *InventoryEvent(uintptr_t intenvory_slot, unsigned long slot_id, int r8);
 
 	bool SetupHooks();
+	void RemoveHooks();
 }
 

@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <map>
+#include "coord.h"
 
 namespace bns {
 	namespace sigs {
@@ -37,6 +38,12 @@ namespace bns {
 
 		// Returns current Player object.
 		uintptr_t GetPlayer();
+		// Returns the coordinates of the player.
+		// Returns the null-vector if player is not valid (eg in loading screen).
+		coord::Coord GetPlayerCoord();
+		// Returns true, if the player is busy moving to a destination
+		// false, if otherwise.
+		bool PlayerIsBusy();
 
 		// Bns executeable functions
 		sigs::Move Move;

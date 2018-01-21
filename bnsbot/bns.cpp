@@ -84,3 +84,25 @@ uintptr_t Bns::GetPlayer() {
 	const std::vector<uintptr_t> offsets = { 0x0, 0x584, 0x0, 0x68, 0x29C, 0x0 };
 	return GetAddressByPointer(base_player_, offsets);
 }
+
+coord::Coord Bns::GetPlayerCoord() {
+	uintptr_t player = Bns::GetPlayer();
+	if (!player) {
+		printf("Error. player is NULL\n");
+		return (coord::Coord{ 0, 0, 0 });
+	}
+	float *coords = (float *)(player + 0x80);
+	coord::Coord coord_struct;
+	coord_struct.x = coords[0];
+	coord_struct.y = coords[1];
+	coord_struct.z = coords[2];
+	return coord_struct;
+}
+
+bool bns::Bns::PlayerIsBusy() {
+	uintptr_t player = Bns::GetPlayer();
+	if (!player) {
+		return false;
+	}
+	return *(bool *)(player + 0x23C0 + 0x8);
+}

@@ -6,11 +6,13 @@
 
 namespace bot {
 	class Path : public Command {
-		std::vector<Coord> path_;
-
 	public:
-		Path(std::vector<Coord>);
-		std::vector<Coord> GetPath();
+		Path();
+		Path(std::vector<coord::Coord>);
+		void SetPath(std::vector<coord::Coord> path);
+		std::vector<coord::Coord> GetPath();
 		bool Execute();
+	protected:
+		std::vector<coord::Coord> path_;
 	};
 }

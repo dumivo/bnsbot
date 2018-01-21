@@ -2,7 +2,7 @@
 #include "controller.h"
 
 DWORD bot::ControllerThread(LPVOID param) {
-	while (true) {
+	while (bot::GetState() != bot::Off) {
 		if (GetAsyncKeyState(VK_INSERT)) {
 			bot::ChangeState(bot::Running);
 		}
@@ -11,4 +11,7 @@ DWORD bot::ControllerThread(LPVOID param) {
 		}
 		Sleep(100);
 	}
+
+	printf("[CONTROLLER] Exited.\n");
+	return 0;
 }

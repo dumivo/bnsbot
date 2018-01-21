@@ -1,3 +1,4 @@
+#pragma once
 #ifndef POLYHOOK_H
 #define POLYHOOK_H
 #include <windows.h>

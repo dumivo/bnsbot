@@ -146,6 +146,8 @@
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="command.cpp" />
     <ClCompile Include="controller.cpp" />
+    <ClCompile Include="coord.cpp" />
+    <ClCompile Include="loading_path.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="path.cpp" />
@@ -159,6 +161,7 @@
     <ClInclude Include="command.h" />
     <ClInclude Include="controller.h" />
     <ClInclude Include="coord.h" />
+    <ClInclude Include="loading_path.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="path.h" />
     <ClInclude Include="PolyHook.h" />

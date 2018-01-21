@@ -12,5 +12,6 @@ namespace bot {
 	/// <summary> Changes the state of the bot in a thread-safe manner.</summary>
 	/// <param name="state"> The new state. </param>
 	void ChangeState(State state);
+	State GetState();
 	void BotMain(LPVOID param);
 }
