@@ -39,12 +39,16 @@ DWORD WINAPI MainThread(LPVOID param) {
 	printf("Move = %p\n", bns->Move);
 	printf("SendAction = %p\n", bns->SendAction);
 	printf("SendKeyboard = %p\n", bns->SendKeyboard);
+	printf("SendTab = %p\n", bns->SendTab);
+	printf("SendEscape = %p\n", bns->SendEscape);
 	printf("UpdateKeybdDevice = %p\n", bns->UpdateKeybdDevice);
 	printf("InventoryEvent = %p\n", bns->InventoryEvent);
 	printf("===== BNSFUNCTIONS =====\n");
 	printf("===== ADDRESSES =====\n");
 	printf("player = %p\n", bns->GetPlayer());
 	printf("===== ADDRESSES =====\n");
+
+	bot::dll = (HMODULE) param;
 	bot::BotMain(NULL);
 
 	//Detour_Ex->UnHook();
@@ -210,6 +214,8 @@ DWORD WINAPI MainThread(LPVOID param) {
 	printf("Move = %p\n", bns->Move);
 	printf("SendAction = %p\n", bns->SendAction);
 	printf("SendKeyboard = %p\n", bns->SendKeyboard);
+	printf("SendTab = %p\n", bns->SendTab);
+	printf("SendEscape = %p\n", bns->SendEscape);
 	printf("UpdateKeybdDevice = %p\n", bns->UpdateKeybdDevice);
 	printf("InventoryEvent = %p\n", bns->InventoryEvent);
 	printf("===== BNSFUNCTIONS =====\n");

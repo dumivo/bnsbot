@@ -49,6 +49,7 @@ bool bot::LoadingPath::Execute() {
 
 			Sleep(250);
 
+			
 			// Wait for loading screen to pop up.
 			while (bns_instance->PlayerIsBusy()) {
 				Sleep(50);
@@ -73,6 +74,6 @@ bool bot::LoadingPath::Execute() {
 
 		} while (retry);
 	} 
-
+	Sleep(1000);
 	return false;
 }

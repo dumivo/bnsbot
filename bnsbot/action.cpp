@@ -1,5 +1,7 @@
 #include "action.h"
 #include "bns.h"
+#include "bot.h"
+#include <ctime>
 
 using namespace bns;
 void SendPacket(int a, int b) {
@@ -16,6 +18,7 @@ void bot::X() {
 void bot::Z() {
 	Bns *bns = Bns::getInstance();
 	bns->SendKeyboardEasy(1, 4);
+	bot::cooldown_start_time = clock();
 }
 
 void bot::V() {
@@ -41,4 +44,14 @@ void bot::UIF() {
 void bot::PickAllF() {
 	Bns *bns = Bns::getInstance();
 	bns->SendActionEasy(0x14, 2);
+}
+
+void bot::Tab() {
+	Bns *bns = Bns::getInstance();
+	bns->SendTabEasy();
+}
+
+void bot::Esc() {
+	Bns *bns = Bns::getInstance();
+	bns->SendEscEasy();
 }

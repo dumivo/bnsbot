@@ -7,4 +7,6 @@ namespace bot {
 	void Q();
 	void UIF();
 	void PickAllF();
+	void Tab();
+	void Esc();
 }

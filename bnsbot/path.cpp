@@ -25,6 +25,9 @@ std::vector<coord::Coord> Path::GetPath() {
 }
 
 bool Path::Execute() {
+	if (path_.size() == 0) {
+		return false;
+	}
 	bns::Bns *bns_instance = bns::Bns::getInstance();
 	
 	size_t i = 0;

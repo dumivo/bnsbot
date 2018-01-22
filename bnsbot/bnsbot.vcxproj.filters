@@ -54,6 +54,15 @@
     <ClCompile Include="combat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="loot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="buy_ticket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="buy_entrance_ticket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory.h">
@@ -96,6 +105,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="packets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="buy_ticket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="buy_entrance_ticket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

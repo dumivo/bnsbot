@@ -10,9 +10,11 @@ namespace bns {
 		typedef bool *(__fastcall *Move)(uintptr_t player, float x, float y, float z);
 		typedef void *(__fastcall *SendAction)(uintptr_t rcx, int rdx, int r8);
 		typedef void *(__fastcall *SendKeyboard)(uintptr_t rcx, int rdx, int r8);
+		typedef void *(__fastcall *SendTab)(uintptr_t rcx);
+		typedef void *(__fastcall *SendEscape)(uintptr_t rcx);
 		typedef void *(__fastcall *ObjectCoord)(uintptr_t rcx, uintptr_t rdx);
 		typedef void  (__fastcall *UpdateTargetHP)(uintptr_t rcx, unsigned long hp, uintptr_t r8);
-		typedef void *(__fastcall *UpdateKeybdDevice)(uintptr_t rcx, uintptr_t rdx, uintptr_t r8);
+		typedef void *(__fastcall *UpdateKeybdDevice)(uintptr_t rcx, uintptr_t rdx);
 		typedef void *(__fastcall *InventoryEvent)(uintptr_t intenvory_slot, unsigned long slot_id, int r8);
 	}
 
@@ -62,6 +64,8 @@ namespace bns {
 
 		void SendKeyboardEasy(int a, int b);
 		void SendActionEasy(int a, int b);
+		void SendTabEasy();
+		void SendEscEasy();
 		void SendPacketEasy(void *data);
 
 		void SetSendPacketStructs(uintptr_t rcx, uintptr_t rdx);
@@ -72,6 +76,8 @@ namespace bns {
 		sigs::SendAction SendAction;
 		sigs::ObjectCoord ObjectCoord;
 		sigs::SendKeyboard SendKeyboard;
+		sigs::SendTab SendTab;
+		sigs::SendEscape SendEscape;
 		sigs::UpdateTargetHP UpdateTargetHP;
 		sigs::UpdateKeybdDevice UpdateKeybdDevice;
 		sigs::InventoryEvent InventoryEvent;

@@ -9,6 +9,9 @@ namespace bot {
 	static std::mutex mutex_bot_state;
 	static State bot_state = Off;
 
+	static double cooldown_start_time;
+	static HMODULE dll;
+
 	/// <summary> Changes the state of the bot in a thread-safe manner.</summary>
 	/// <param name="state"> The new state. </param>
 	void ChangeState(State state);
