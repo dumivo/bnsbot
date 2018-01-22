@@ -142,8 +142,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="action.cpp" />
     <ClCompile Include="bns.cpp" />
     <ClCompile Include="bot.cpp" />
+    <ClCompile Include="combat.cpp" />
     <ClCompile Include="command.cpp" />
     <ClCompile Include="controller.cpp" />
     <ClCompile Include="coord.cpp" />
@@ -155,6 +157,7 @@
     <ClCompile Include="sensors.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="action.h" />
     <ClInclude Include="bns.h" />
     <ClInclude Include="bot.h" />
     <ClInclude Include="combat.h" />
@@ -163,6 +166,7 @@
     <ClInclude Include="coord.h" />
     <ClInclude Include="loading_path.h" />
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="packets.h" />
     <ClInclude Include="path.h" />
     <ClInclude Include="PolyHook.h" />
     <ClInclude Include="Script.h" />

@@ -1,12 +1,17 @@
 #include "bns.h"
 #include "Memory.h"
+#include <mutex>
 #include <map>
+
+#define BNS_SHOW_DEBUG_MESSAGES 0
 
 using namespace bns;
 
 bool Bns::has_instance_ = false;
 Bns *Bns::instance_ = NULL;
 
+static std::mutex mutex_target_hp;
+static std::mutex mutex_target_dead;
 
 Bns *Bns::getInstance() {
 	if (!has_instance_) {
@@ -36,6 +41,9 @@ Bns::Bns() {
 	InventoryEvent = (sigs::InventoryEvent) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x48\x89\x5C\x24\x08\x48\x89\x74\x24\x10\x57\x48\x83\xEC\x20\x48\x8B\x05\xFA\x34\x3B\x01\x41\x0F\xB6\xF8\x48\x8B\xF2",
 		"xxxxxxxxxxxxxxxxxx????xxxxxxx");
+
+	packet_rcx_ = 0;
+	packet_rdx_ = 0;
 
 	item.insert(std::pair<char *, char *>("\xA\xC", "Moonstone"));
 }
@@ -73,7 +81,7 @@ uintptr_t Bns::GetBasePlayer() {
 
 	// Convert relative address to absolute address.
 	base_player += (uintptr_t)opcode_player + 0x07;
-	
+
 	return base_player;
 
 }
@@ -105,4 +113,73 @@ bool bns::Bns::PlayerIsBusy() {
 		return false;
 	}
 	return *(bool *)(player + 0x23C0 + 0x8);
+}
+
+void bns::Bns::SetKeybdDevice(uintptr_t keybd_device) {
+	if (keybd_device_ != keybd_device) {
+		keybd_device_ = keybd_device;
+#if defined (BNS_SHOW_DEBUG_MESSAGES)
+		printf("[BNS] Changed keybd_device to %p.\n", (void *)keybd_device_);
+#endif
+	}
+}
+
+uintptr_t bns::Bns::GetKeybdDevice() {
+	return keybd_device_;
+}
+
+void bns::Bns::SetTargetHP(unsigned long hp) {
+	{
+		std::lock_guard<std::mutex> lock(mutex_target_hp);
+		target_hp_ = hp;
+	}
+#if defined (BNS_SHOW_DEBUG_MESSAGES)
+	printf("[BNS] Target HP = %i.\n", target_hp_);
+#endif
+}
+
+unsigned long bns::Bns::GetTargetHP() {
+	{
+		std::lock_guard<std::mutex> lock(mutex_target_hp);
+		unsigned long hp = target_hp_;
+	}
+
+	return target_hp_;
+}
+
+void bns::Bns::SetTargetDead(bool dead) {
+	std::lock_guard<std::mutex> lock(mutex_target_dead);
+	target_is_dead_ = dead;
+}
+
+bool bns::Bns::IsTargetDead() {
+	bool dead = false;
+	{
+		std::lock_guard<std::mutex> lock(mutex_target_dead);
+		dead = target_is_dead_;
+	}
+	return dead;
+}
+
+void bns::Bns::SendKeyboardEasy(int a, int b) {
+	if (keybd_device_) {
+		SendKeyboard(keybd_device_, a, b);
+	}
+}
+
+void bns::Bns::SendActionEasy(int a, int b) {
+	if (keybd_device_) {
+		SendAction(keybd_device_, a, b);
+	}
+}
+
+void bns::Bns::SendPacketEasy(void * data) {
+	if (packet_rcx_ && packet_rdx_) {
+		SendPacket(packet_rcx_, packet_rdx_, data);
+	}
+}
+
+void bns::Bns::SetSendPacketStructs(uintptr_t rcx, uintptr_t rdx) {
+	packet_rcx_ = rcx;
+	packet_rdx_ = rdx;
 }

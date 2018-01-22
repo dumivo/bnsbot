@@ -8,6 +8,9 @@
 #include "command.h"
 #include "path.h"
 #include "loading_path.h"
+#include "action.h"
+#include "combat.h"
+#include "packets.h"
 
 #define BOT_SHOW_DEBUG_MESSAGES 0
 
@@ -60,6 +63,18 @@ void bot::BotMain(LPVOID param) {
 				//bns->Move(bns->GetPlayer(), -53460.5, 5289.35, 9982.39);
 				Command *p = new LoadingPath(v);
 				p->Execute();
+				Sleep(500);
+			}
+			if (GetAsyncKeyState(VK_NUMPAD1)) {
+				Command *combat = new Combat();
+				combat->Execute();
+			}
+			if (GetAsyncKeyState(VK_NUMPAD2)) {
+				bns_instance->SendPacketEasy((void *)packets::buy_orb);
+				Sleep(500);
+			}
+			if (GetAsyncKeyState(VK_NUMPAD3)) {
+				UIF();
 				Sleep(500);
 			}
 
