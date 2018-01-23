@@ -29,7 +29,7 @@ bool bot::LoadingPath::Execute() {
 		bool retry = false;
 		do {
 			retry = false;
-			uintptr_t player = bns_instance->GetPlayer();
+			uintptr_t player = bns_instance->GetPlayerAddress();
 			if (!player) {
 				retry = true;
 #ifdef LOADING_PATH_DEBUG_MESSAGES
@@ -65,7 +65,7 @@ bool bot::LoadingPath::Execute() {
 			while (player && player == player_old) {
 				// It's better to wait too long than too short.
 				Sleep(2000);
-				player = bns_instance->GetPlayer();
+				player = bns_instance->GetPlayerAddress();
 			}
 
 #ifdef LOADING_PATH_DEBUG_MESSAGES

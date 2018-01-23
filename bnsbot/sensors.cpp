@@ -38,7 +38,8 @@ void * hook::SendPacket(uintptr_t rcx, uintptr_t rdx, void * data) {
 }
 
 bool * hook::Move(uintptr_t player, float x, float y, float z) {
-	printf("[Move] {%ff, %ff, %ff}\n", x, y, z);
+	bool *rtn = oMove(player, x, y, z);
+	printf("[Move] %p { %ff, %ff, %ff }\n", (void *)rtn, x, y, z);
 	return oMove(player, x, y, z);
 }
 

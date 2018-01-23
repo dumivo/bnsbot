@@ -29,7 +29,7 @@ bool Path::Execute() {
 		return false;
 	}
 	bns::Bns *bns_instance = bns::Bns::getInstance();
-	
+
 	size_t i = 0;
 	bool retry;
 	while (i < path_.size()) {
@@ -37,7 +37,7 @@ bool Path::Execute() {
 			continue;
 		}
 		// Update player address as we could be inside a loading screen.
-		uintptr_t player = bns_instance->GetPlayer();
+		uintptr_t player = bns_instance->GetPlayerAddress();
 		coord::Coord start_coords = bns_instance->GetPlayerCoord();
 
 		// It's not safe doing this while in loading screen in general.
@@ -50,7 +50,7 @@ bool Path::Execute() {
 		retry = false;
 		auto const &element = path_[i];
 		printf("Moving to: (%f, %f, %f)\n", element.x, element.y, element.z);
-		
+
 		bns_instance->Move(player, element.x, element.y, element.z);
 
 		if (!*(bool *)(player + 0x23C8)) {
@@ -66,7 +66,7 @@ bool Path::Execute() {
 		while (bns_instance->PlayerIsBusy() && !retry) {
 			Sleep(50);
 			// Refreshing player address
-			player = bns_instance->GetPlayer();
+			player = bns_instance->GetPlayerAddress();
 			seconds_passed = (clock() - start_time) / CLOCKS_PER_SEC;
 			if (seconds_passed >= 1 && player) {
 				// Set retry to true if we haven't moved much after a second.
@@ -85,13 +85,9 @@ bool Path::Execute() {
 		// below should only be for loading screens
 		start_coords = bns_instance->GetPlayerCoord();
 		float distance = coord::GetDistance(start_coords, element);
-		if (distance >= 100) {
-			// Assume that the last destination is through a portal and retry should be disabled.
-			// We think that needs a more elegant solution right here..
-			if (i < path_.size()) {
-				printf("[PATH] Player has reached destination, but not physically..\n", distance);
-				retry = true;
-			}
+		if (distance >= 50) {
+			printf("[PATH] Player has reached destination, but not physically..\n", distance);
+			retry = true;
 		}
 
 		// TODO: Listen on external events like suspend or stop.

@@ -23,7 +23,7 @@ namespace bns {
 		// Base addresses of modules.
 		uintptr_t base_client_, base_shipping_;
 		// Base addresses derived from base addresses of modules.
-		uintptr_t base_player_;
+		uintptr_t base_player_, base_target_hp_;
 		// Base structures, devices, things you have to pass as arguments..
 		uintptr_t keybd_device_;
 
@@ -38,6 +38,8 @@ namespace bns {
 		Bns();
 
 		uintptr_t GetBasePlayer();
+		uintptr_t GetBaseTargetHP();
+		
 	public:
 		std::map<char *, char *> item;
 
@@ -45,10 +47,14 @@ namespace bns {
 		~Bns();
 
 		// Returns current Player object.
-		uintptr_t GetPlayer();
+		uintptr_t GetPlayerAddress();
+		uintptr_t GetTargetHPAddress();
 		// Returns the coordinates of the player.
 		// Returns the null-vector if player is not valid (eg in loading screen).
 		coord::Coord GetPlayerCoord();
+
+		
+
 		// Returns true, if the player is busy moving to a destination
 		// false, if otherwise.
 		bool PlayerIsBusy();

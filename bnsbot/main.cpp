@@ -45,7 +45,8 @@ DWORD WINAPI MainThread(LPVOID param) {
 	printf("InventoryEvent = %p\n", bns->InventoryEvent);
 	printf("===== BNSFUNCTIONS =====\n");
 	printf("===== ADDRESSES =====\n");
-	printf("player = %p\n", bns->GetPlayer());
+	printf("player = %p\n", bns->GetPlayerAddress());
+	printf("target = %p\n", bns->GetTargetHPAddress());
 	printf("===== ADDRESSES =====\n");
 
 	bot::dll = (HMODULE) param;

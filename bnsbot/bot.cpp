@@ -61,7 +61,9 @@ void bot::BotMain(LPVOID param) {
 			{ -49446.367188f, 4815.529297f, -8795.016602f },
 		});
 		Command *f13_to_fujin = new Path(std::vector<coord::Coord> {
-			{-47519.023438f, 9901.060547f, 20080.927734f}
+			{-47519.023438f, 9901.060547f, 20080.927734f},
+			{ -47511.371094f, 9648.577148f, 20081.759766f },
+			{ -47519.023438f, 9901.060547f, 20080.927734f }
 		});
 		Command *kill = new CombatSpin();
 		Command *loot = new Loot();
@@ -108,7 +110,7 @@ void bot::BotMain(LPVOID param) {
 			
 			
 
-			current_player = bns_instance->GetPlayer();
+			current_player = bns_instance->GetPlayerAddress();
 			if (current_player != last_player) {
 				last_player = current_player;
 				if (last_player != NULL) {
@@ -124,8 +126,7 @@ void bot::BotMain(LPVOID param) {
 				Sleep(500);
 			}
 			if (GetAsyncKeyState(VK_NUMPAD1)) {
-				Command *combat = new Combat();
-				combat->Execute();
+				f13_to_fujin->Execute();
 			}
 			if (GetAsyncKeyState(VK_NUMPAD2)) {
 				bns_instance->SendPacketEasy((void *)packets::buy_orb);

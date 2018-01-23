@@ -11,10 +11,7 @@ DWORD bot::ControllerThread(LPVOID param) {
 			bot::ChangeState(bot::Suspended);
 		}
 		else if (GetAsyncKeyState(VK_END)) {
-			FreeConsole();
-			hook::RemoveHooks();
-			FreeLibraryAndExitThread((HMODULE)bot::dll, 0);
-			break;
+			bot::ChangeState(bot::Suspended);
 		}
 		Sleep(100);
 	}

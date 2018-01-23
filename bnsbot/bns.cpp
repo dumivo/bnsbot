@@ -25,6 +25,7 @@ Bns::Bns() {
 	base_client_ = (uintptr_t)GetModuleHandle(NULL);
 	base_shipping_ = (uintptr_t)GetModuleHandle(L"bsengine_shipping64.dll");
 	base_player_ = GetBasePlayer();
+	base_target_hp_ = GetBaseTargetHP();
 
 	SendPacket = (sigs::SendPacket)(base_client_ + 0xFB9D60);
 	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
@@ -49,13 +50,9 @@ Bns::Bns() {
 		"xxxxxxxxxxxx????xxxxx???????xxx");
 
 	/*
-	Send tab
-	\x40\x53\x48\x83\xEC\x30\x48\x8B\xD9\x48\x8B\x0D\xE0\x08\x2E\x01\x48\x85\xC9\x0F\x84\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x48\x85\xD2\x0F\x84\x00\x00\x00\x00\x4C\x89\x64\x24\x28\x00\x00\x00\x00\x00\x00\x00\x4D\x85\xE4\x75\x0D
-	xxxxxxxxxxxx????xxxxx???????????xxxxx????xxxxx???????xxxxx
-
-	Send esc
-	\x41\x54\x48\x83\xEC\x20\x4C\x8B\xE1\x48\x8B\x0D\x90\x03\x2E\x01\x48\x85\xC9\x74\x16\x00\x00\x00\x00\x00\x00\x00\x48\x85\xC9
-	xxxxxxxxxxxx????xxxxx???????xxx
+	base monsterhp
+	\x48\x8B\x0D\x2C\x07\x1E\x01\x48\x89\x74\x24\x30\x33\xF6\x48\x85\xC9
+	xxx????xxxxxxxxxx
 	*/
 
 	packet_rcx_ = 0;
@@ -68,6 +65,33 @@ Bns::~Bns() {
 	has_instance_ = false;
 }
 
+uintptr_t ScanBaseRelative(uintptr_t start_address, const BYTE *pattern, const char *mask,
+	unsigned int size, unsigned int offset, unsigned int len) {
+	BYTE *opcode = (BYTE *)Pattern(start_address, 0xB000000, pattern, mask);
+	if (!opcode) {
+		printf("ERROR: pOpcode_player\n");
+		return 0;
+	}
+
+	BYTE *base_adr_raw = new BYTE[len];
+	uintptr_t base_adr = 0;
+
+	// Retrieve relative ADR-part
+	memcpy(base_adr_raw, opcode + offset, len * sizeof(BYTE));
+
+	// Convert byte-array to uintptr_t value.
+	for (int i = 0; i < len; i++) {
+		base_adr += base_adr_raw[i] << 8 * i;
+	}
+
+	delete base_adr_raw;
+
+	// Convert relative address to absolute address.
+	base_adr += (uintptr_t)opcode + size;
+
+	return base_adr;
+}
+
 uintptr_t Bns::GetBasePlayer() {
 	const BYTE *pattern = (BYTE *)
 		"\x48\x8B\x05\x00\x00\x00\x00"  // mov rax, qword ptr ds:[ADR]
@@ -77,6 +101,7 @@ uintptr_t Bns::GetBasePlayer() {
 		"\x48\x8B\x82\x9C\x02\x00\x00"; // mov rax, qword ptr ds:[29C]
 	const char *mask = "xxx????xxxxxxxxxxxxxxxxxxxxx";
 
+	/*
 	// opcode mov rax, qword ptr ds:[ADR] (we want to find out ADR).
 	BYTE *opcode_player = (BYTE *)Pattern(base_shipping_, 0xB000000, pattern, mask);
 	if (!opcode_player) {
@@ -96,13 +121,13 @@ uintptr_t Bns::GetBasePlayer() {
 	}
 
 	// Convert relative address to absolute address.
-	base_player += (uintptr_t)opcode_player + 0x07;
+	base_player += (uintptr_t)opcode_player + 0x07;*/
 
-	return base_player;
+	return ScanBaseRelative(base_shipping_, pattern, mask, 0x7, 0x3, 0x4);
 
 }
 
-uintptr_t Bns::GetPlayer() {
+uintptr_t Bns::GetPlayerAddress() {
 	// + 80 = coords
 	// + 23c0 = current moving destination
 	const std::vector<uintptr_t> offsets = { 0x0, 0x584, 0x0, 0x68, 0x29C, 0x0 };
@@ -110,7 +135,7 @@ uintptr_t Bns::GetPlayer() {
 }
 
 coord::Coord Bns::GetPlayerCoord() {
-	uintptr_t player = Bns::GetPlayer();
+	uintptr_t player = Bns::GetPlayerAddress();
 	if (!player) {
 		printf("Error. player is NULL\n");
 		return (coord::Coord{ 0, 0, 0 });
@@ -123,8 +148,19 @@ coord::Coord Bns::GetPlayerCoord() {
 	return coord_struct;
 }
 
+uintptr_t Bns::GetBaseTargetHP() {
+	const BYTE *pattern = (BYTE *) "\x48\x8B\x0D\x2C\x07\x1E\x01\x48\x89\x74\x24\x30\x33\xF6\x48\x85\xC9";
+	const char *mask = "xxx????xxxxxxxxxx";
+	return ScanBaseRelative(base_client_, pattern, mask, 0x7, 0x3, 0x4);
+}
+
+uintptr_t bns::Bns::GetTargetHPAddress() {
+	const std::vector<uintptr_t> offsets = { 0x0, 0x88, 0x38, 0x788 };
+	return GetAddressByPointer(base_target_hp_, offsets);
+}
+
 bool bns::Bns::PlayerIsBusy() {
-	uintptr_t player = Bns::GetPlayer();
+	uintptr_t player = Bns::GetPlayerAddress();
 	if (!player) {
 		return false;
 	}
@@ -155,12 +191,19 @@ void bns::Bns::SetTargetHP(unsigned long hp) {
 }
 
 unsigned long bns::Bns::GetTargetHP() {
-	{
+	/*{
 		std::lock_guard<std::mutex> lock(mutex_target_hp);
 		unsigned long hp = target_hp_;
 	}
 
-	return target_hp_;
+	return target_hp_;*/
+	uintptr_t hp_adr = GetTargetHPAddress();
+	if (hp_adr) {
+		return *(unsigned long *)hp_adr;
+	}
+	else {
+		return 0;
+	}
 }
 
 void bns::Bns::SetTargetDead(bool dead) {
