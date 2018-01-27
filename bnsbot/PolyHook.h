@@ -13,7 +13,7 @@
 #include <assert.h>
 #pragma comment(lib,"Dbghelp.lib")
 #pragma comment(lib,"capstone.lib")
-#define PLH_SHOW_DEBUG_MESSAGES 0 //To print messages even in release
+//#define PLH_SHOW_DEBUG_MESSAGES 0 //To print messages even in release
 
 namespace PLH {
 	namespace Tools
@@ -22,7 +22,7 @@ namespace PLH {
 		{
 			va_list args;
 			va_start(args, fmt);
-#if defined(_DEBUG) || defined(PLH_SHOW_DEBUG_MESSAGES)
+#if defined(PLH_SHOW_DEBUG_MESSAGES)
 			vfprintf_s(stdout, fmt, args);
 #endif
 			va_end(args);

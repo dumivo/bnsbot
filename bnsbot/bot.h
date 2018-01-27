@@ -7,8 +7,12 @@
 namespace bot {
 	enum State { Off, Ready, Running, Suspended };
 	static std::mutex mutex_bot_state;
+	static std::mutex m_change;
+	static std::condition_variable cv_change;
+
 	static State bot_state = Off;
 
+	static bool state_change_done;
 	static double cooldown_start_time;
 	static HMODULE dll;
 

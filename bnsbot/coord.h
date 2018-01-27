@@ -7,5 +7,5 @@ namespace coord {
 		float z;
 	} Coord;
 
-	float GetDistance(Coord a, Coord b);
+	float GetDistance(const Coord &a, const Coord &b);
 }

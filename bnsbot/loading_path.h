@@ -7,8 +7,10 @@ namespace bot {
 	// as the last destination tends to be moving into one.
 	class LoadingPath : public Path {
 		coord::Coord loading_move_;
+		bool sleepy_ = false;
 	public:
 		LoadingPath(std::vector<coord::Coord>);
+		LoadingPath(std::vector<coord::Coord>, bool sleepy);
 		~LoadingPath();
 
 		bool Execute();

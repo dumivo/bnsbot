@@ -11,7 +11,7 @@ DWORD bot::ControllerThread(LPVOID param) {
 			bot::ChangeState(bot::Suspended);
 		}
 		else if (GetAsyncKeyState(VK_END)) {
-			bot::ChangeState(bot::Suspended);
+			bot::ChangeState(bot::Off);
 		}
 		Sleep(100);
 	}

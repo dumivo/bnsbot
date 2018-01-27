@@ -26,12 +26,15 @@ Bns::Bns() {
 	base_shipping_ = (uintptr_t)GetModuleHandle(L"bsengine_shipping64.dll");
 	base_player_ = GetBasePlayer();
 	base_target_hp_ = GetBaseTargetHP();
+	keybd_device_ = 0x00000000FA2CBF30;
 
 	SendPacket = (sigs::SendPacket)(base_client_ + 0xFB9D60);
 	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
 	SendAction = (sigs::SendAction)(base_client_ + 0x5313D0); // Mouse and F
 	SendKeyboard = (sigs::SendKeyboard)(base_client_ + 0x5322C0);
 	ObjectCoord = (sigs::ObjectCoord)(base_shipping_ + 0xA242E0); // Obsolete
+
+	Exc = (sigs::Exc)(base_shipping_ + 0x828B10);
 
 	UpdateTargetHP = (sigs::UpdateTargetHP) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x48\x89\x5C\x24\x18\x48\x89\x7C\x24\x20\x41\x54\x41\x55\x41\x56\x48\x83\xEC\x20\x48\x8D\x79\x18\x48\x89\x51\x38",
@@ -48,11 +51,33 @@ Bns::Bns() {
 	SendEscape = (sigs::SendEscape) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x41\x54\x48\x83\xEC\x20\x4C\x8B\xE1\x48\x8B\x0D\x90\x03\x2E\x01\x48\x85\xC9\x74\x16\x00\x00\x00\x00\x00\x00\x00\x48\x85\xC9",
 		"xxxxxxxxxxxx????xxxxx???????xxx");
+	SendMove2 = (sigs::SendMove2) Pattern(base_shipping_, 0xB000000,
+		(BYTE *)"\x40\x53\x48\x83\xEC\x60\x48\x8B\x05\xCB\x44\x13\x03\x0F\x29\x74\x24\x50\x0F\x29\x7C\x24\x40\x48\x85\xC0\x44\x0F\x29\x44\x24\x30\x44\x0F\x29\x4C\x24\x20\x0F\x28\xFB\x44\x0F\x28\xC2\x44\x0F\x28\xC9",
+		"xxxxxxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	ExitLoadingScreen = (sigs::ExitLoadingScreen) Pattern(base_client_, 0xB000000,
+		(BYTE *)"\x40\x53\x48\x83\xEC\x40\x48\x83\x79\x18\x00\x48\x8B\xD9\x0F\x84\x00\x00\x00\x00\x48\x83\xC9\xFF",
+		"xxxxxxxxxxxxxxxx????xxxx");
+	EInterfaceGetInstance = (sigs::EInterfaceGetInstance) GetProcAddress((HMODULE)base_shipping_, "EInterfaceGetInstance");
+
+
 
 	/*
 	base monsterhp
 	\x48\x8B\x0D\x2C\x07\x1E\x01\x48\x89\x74\x24\x30\x33\xF6\x48\x85\xC9
 	xxx????xxxxxxxxxx
+	SendMove2
+	\x40\x53\x48\x83\xEC\x60\x48\x8B\x05\xCB\x44\x13\x03\x0F\x29\x74\x24\x50\x0F\x29\x7C\x24\x40\x48\x85\xC0\x44\x0F\x29\x44\x24\x30\x44\x0F\x29\x4C\x24\x20\x0F\x28\xFB\x44\x0F\x28\xC2\x44\x0F\x28\xC9
+	xxxxxxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+	ExitLoadingScreen
+	\x40\x53\x48\x83\xEC\x40\x48\x83\x79\x18\x00\x48\x8B\xD9\x0F\x84\x00\x00\x00\x00\x48\x83\xC9\xFF
+	xxxxxxxxxxxxxxxx????xxxx
+
+	{
+	0xB0, 0x98, 0x39, 0x41, 0x01, 0x00, 0x00, 0x00, 0x10, 0xE0, 0x5C, 0x0A, 0x01, 0x00, 0x00, 0x00,
+	0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x49, 0x00, 0x5F, 0x00, 0x53, 0x00, 0x57, 0x00, 0x30, 0x00, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00
+	};
 	*/
 
 	packet_rcx_ = 0;
@@ -148,6 +173,14 @@ coord::Coord Bns::GetPlayerCoord() {
 	return coord_struct;
 }
 
+void bns::Bns::SetSleep(bool mode) {
+	is_sleeping_ = mode;
+}
+
+bool bns::Bns::IsSleeping() {
+	return is_sleeping_;
+}
+
 uintptr_t Bns::GetBaseTargetHP() {
 	const BYTE *pattern = (BYTE *) "\x48\x8B\x0D\x2C\x07\x1E\x01\x48\x89\x74\x24\x30\x33\xF6\x48\x85\xC9";
 	const char *mask = "xxx????xxxxxxxxxx";
@@ -177,7 +210,7 @@ void bns::Bns::SetKeybdDevice(uintptr_t keybd_device) {
 }
 
 uintptr_t bns::Bns::GetKeybdDevice() {
-	return keybd_device_;
+	return 0x00000000FA2CBF30;
 }
 
 void bns::Bns::SetTargetHP(unsigned long hp) {
@@ -186,7 +219,7 @@ void bns::Bns::SetTargetHP(unsigned long hp) {
 		target_hp_ = hp;
 	}
 #if defined (BNS_SHOW_DEBUG_MESSAGES)
-	printf("[BNS] Target HP = %i.\n", target_hp_);
+	//printf("[BNS] Target HP = %i.\n", target_hp_);
 #endif
 }
 
@@ -228,7 +261,10 @@ void bns::Bns::SendKeyboardEasy(int a, int b) {
 
 void bns::Bns::SendActionEasy(int a, int b) {
 	if (keybd_device_) {
-		SendAction(keybd_device_, a, b);
+		uintptr_t res = (uintptr_t)SendAction(keybd_device_, a, b);
+		if (!(res & 1)) {
+			//printf("Sendaction returned 0 (%p)\n", (void *)res);
+		}
 	}
 }
 
@@ -248,6 +284,15 @@ void bns::Bns::SendPacketEasy(void * data) {
 	if (packet_rcx_ && packet_rdx_) {
 		SendPacket(packet_rcx_, packet_rdx_, data);
 	}
+}
+
+bool bns::Bns::SendMoveEasy(const coord::Coord & destination) {
+	uintptr_t bns_interface = EInterfaceGetInstance();
+	if (bns_interface) {
+		return SendMove2(bns_interface, destination.x, destination.y, destination.z);
+	}
+	printf("[SendMoveEasy] Error - interface is NULL\n");
+	return false;
 }
 
 void bns::Bns::SetSendPacketStructs(uintptr_t rcx, uintptr_t rdx) {

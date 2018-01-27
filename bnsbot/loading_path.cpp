@@ -12,6 +12,13 @@ LoadingPath::LoadingPath(std::vector<coord::Coord> path) {
 	path_.pop_back();
 }
 
+bot::LoadingPath::LoadingPath(std::vector<coord::Coord> path, bool sleepy) {
+	path_ = path;
+	loading_move_ = path_.back();
+	path_.pop_back();
+	sleepy_ = sleepy;
+}
+
 LoadingPath::~LoadingPath() {
 }
 
@@ -44,8 +51,7 @@ bool bot::LoadingPath::Execute() {
 				loading_move_.z);
 #endif // LOADING_PATH_DEBUG_MESSAGES
 
-			bns_instance->Move(player, loading_move_.x, loading_move_.y, 
-				loading_move_.z);
+			bns_instance->SendMoveEasy(loading_move_);
 
 			Sleep(250);
 
@@ -55,6 +61,11 @@ bool bot::LoadingPath::Execute() {
 				Sleep(50);
 			}
 
+			// To me from the future: yes I know this is cringy but.. you know I didn't have much time early on
+			if (sleepy_) {
+				return false;
+			}
+
 #ifdef LOADING_PATH_DEBUG_MESSAGES
 			printf("[LOADING_PATH] Loading screen popped up!\n");
 #endif // LOADING_PATH_DEBUG_MESSAGES
@@ -62,7 +73,30 @@ bool bot::LoadingPath::Execute() {
 			// Wait until player address changes to a non-zero one.
 			// That way we make sure that we don't access a bad address.
 			uintptr_t player_old = player;
-			while (player && player == player_old) {
+			bool was_null = false;
+			clock_t start_time = clock();
+			double seconds_passed;
+			while (!player || player == player_old) {
+				if (!player) {
+					was_null = true;
+#ifdef LOADING_PATH_DEBUG_MESSAGES
+					printf("[LOADING_PATH] Player is null.\n");
+#endif // LOADING_PATH_DEBUG_MESSAGES
+				}
+				else if (player == player_old && was_null == true) {
+#ifdef LOADING_PATH_DEBUG_MESSAGES
+					printf("[LOADING_PATH] Player address didn't change..\n");
+#endif // LOADING_PATH_DEBUG_MESSAGES
+					break;
+				}
+
+				// Just break after 60 seconds being idle..
+				seconds_passed = (clock() - start_time) / CLOCKS_PER_SEC;
+				if (seconds_passed >= 60) {
+					start_time = clock();
+					break;
+				}
+
 				// It's better to wait too long than too short.
 				Sleep(2000);
 				player = bns_instance->GetPlayerAddress();
@@ -74,6 +108,6 @@ bool bot::LoadingPath::Execute() {
 
 		} while (retry);
 	} 
-	Sleep(1000);
+	Sleep(5000);
 	return false;
 }

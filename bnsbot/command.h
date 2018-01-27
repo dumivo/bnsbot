@@ -5,6 +5,6 @@ namespace bot {
 		Command();
 		~Command();
 
-		virtual bool Execute() = 0;
+		virtual bool Execute();
 	};
 }

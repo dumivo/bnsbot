@@ -25,6 +25,18 @@ oSend Send;
 
 
 DWORD WINAPI MainThread(LPVOID param) {
+
+	AllocConsole();
+	SetConsoleTitleA("bnsbot (nice name btw)");
+	AttachConsole(GetCurrentProcessId());
+
+	FILE *pFile = nullptr;
+	freopen_s(&pFile, "CON", "r", stdin);
+	freopen_s(&pFile, "CON", "w", stdout);
+	freopen_s(&pFile, "CON", "w", stderr);
+
+	printf("===== BNS BOT (totally working right now, nice name btw) =====\n");
+
 	printf("Created MainThread.\n");
 
 
@@ -305,23 +317,12 @@ DWORD WINAPI MainThread(LPVOID param) {
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	if (fdwReason == DLL_PROCESS_ATTACH) {
-		AllocConsole();
-		SetConsoleTitleA("bnsbot (nice name btw)");
-		AttachConsole(GetCurrentProcessId());
-
-		FILE *pFile = nullptr;
-		freopen_s(&pFile, "CON", "r", stdin);
-		freopen_s(&pFile, "CON", "w", stdout);
-		freopen_s(&pFile, "CON", "w", stderr);
-
-		printf("===== BNS BOT (totally working right now, nice name btw) =====\n");
-
 		CreateThread(0, 0, MainThread, hinstDLL, 0, 0);
 
-		// DisableThreadLibraryCalls(hinstDLL);
+		DisableThreadLibraryCalls(hinstDLL);
 	}
 	else if (fdwReason == DLL_PROCESS_ATTACH) {
-		//FreeConsole();
+		FreeConsole();
 	}
 
 	return true;

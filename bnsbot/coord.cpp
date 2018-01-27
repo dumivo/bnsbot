@@ -4,7 +4,7 @@
 
 //#define COORD_SHOW_DEBUG_MESSAGES 0
 
-float coord::GetDistance(Coord a, Coord b) {
+float coord::GetDistance(const Coord &a, const Coord &b) {
 #ifdef COORD_SHOW_DEBUG_MESSAGES
 	printf("a = (%f, %f, %f)\nb = (%f, %f, %f)\n", a.x, a.y, a.z, b.x, b.y, b.z);
 #endif

@@ -16,6 +16,10 @@ namespace bns {
 		typedef void  (__fastcall *UpdateTargetHP)(uintptr_t rcx, unsigned long hp, uintptr_t r8);
 		typedef void *(__fastcall *UpdateKeybdDevice)(uintptr_t rcx, uintptr_t rdx);
 		typedef void *(__fastcall *InventoryEvent)(uintptr_t intenvory_slot, unsigned long slot_id, int r8);
+		typedef bool (__fastcall *Exc)(uintptr_t rcx);
+		typedef bool (__fastcall *SendMove2)(uintptr_t bns_interface, float x, float y, float z);
+		typedef uintptr_t(__fastcall *EInterfaceGetInstance)();
+		typedef void *(__fastcall *ExitLoadingScreen)(uintptr_t rcx);
 	}
 
 	class Bns {
@@ -32,6 +36,8 @@ namespace bns {
 
 		// Stolen structs for SendPacket
 		uintptr_t packet_rcx_, packet_rdx_;
+
+		bool is_sleeping_ = false;
 
 		static bool has_instance_;
 		static Bns *instance_;
@@ -53,7 +59,10 @@ namespace bns {
 		// Returns the null-vector if player is not valid (eg in loading screen).
 		coord::Coord GetPlayerCoord();
 
-		
+		// Sets to sleep mode, disables some functionality
+		void SetSleep(bool);
+		// Returns sleep mode
+		bool IsSleeping();
 
 		// Returns true, if the player is busy moving to a destination
 		// false, if otherwise.
@@ -73,6 +82,7 @@ namespace bns {
 		void SendTabEasy();
 		void SendEscEasy();
 		void SendPacketEasy(void *data);
+		bool SendMoveEasy(const coord::Coord &destination);
 
 		void SetSendPacketStructs(uintptr_t rcx, uintptr_t rdx);
 
@@ -87,5 +97,9 @@ namespace bns {
 		sigs::UpdateTargetHP UpdateTargetHP;
 		sigs::UpdateKeybdDevice UpdateKeybdDevice;
 		sigs::InventoryEvent InventoryEvent;
+		sigs::Exc Exc;
+		sigs::EInterfaceGetInstance EInterfaceGetInstance;
+		sigs::SendMove2 SendMove2;
+		sigs::ExitLoadingScreen ExitLoadingScreen;
 	};
 }

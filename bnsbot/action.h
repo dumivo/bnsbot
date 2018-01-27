@@ -6,6 +6,7 @@ namespace bot {
 	void F();
 	void Q();
 	void UIF();
+	void PortalF();
 	void PickAllF();
 	void Tab();
 	void Esc();

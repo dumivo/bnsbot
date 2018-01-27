@@ -17,40 +17,57 @@ bool bot::Combat::Execute() {
 	double milliseconds_passed = (clock() - bot::cooldown_start_time) / (CLOCKS_PER_SEC / 1000);
 	while (milliseconds_passed <= 45000) {
 		Sleep(100);
+		milliseconds_passed = clock();
+		printf("Waiting for cd\n");
 	}
 
-	while (bot::GetState() != bot::Running) {
-		Sleep(100);
+	while (bot::GetState() == bot::Suspended) {
+		Sleep(1000);
+		printf("Sleeping\n");
 	}
 
 	// X -> Z -> F -> F -> F .. -> F until HP <= 1
 	bns::Bns *bns_instance = bns::Bns::getInstance();
+	
 	while (bns_instance->GetTargetHP() == 0) {
-		Sleep(50);
+		Sleep(500);
+		printf("Target hp is 0\n");
 	}
+
+	printf("Start combat\n");
 
 	// Daze the enemy and wait until the daze hit for frame perfect animation cancelling.
 	unsigned long hp = bns_instance->GetTargetHP();
 	V();
-	while (bns_instance->GetTargetHP() >= hp) {
+	// Wait until enemy lost hp, but with a max. timeout
+	clock_t start_time = clock();
+	milliseconds_passed = 0;
+	while (bns_instance->GetTargetHP() >= hp && milliseconds_passed < 500) {//
+		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
 	}
-
-	X();
-	Sleep(500);
-	Z();
-	Sleep(250);
+	Sleep(100);
+	for (int i = 0; i < 2; i++) {
+		X();
+		Sleep(200);
+	}
+	for (int i = 0; i < 2; i++) {
+		Z();
+		Sleep(100);
+	}
+	
 
 #if defined (COMBAT_SHOW_DEBUG_MESSAGES)
 	printf("[COMBAT] Spamming F..\n");
 #endif
 
-	clock_t start_time = clock();
+	start_time = clock();
 	
 	bns_instance->SetTargetDead(false);
 	// Spam the shit out of the monster until it's dead.
-	while (!bns_instance->IsTargetDead() && GetState() == Running) {
+	while (bns_instance->GetTargetHP() != 0 && GetState() != Suspended) {
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
-		if (milliseconds_passed >= 10) {
+		// Don't spam too much fucker or else the client will completely shut down man..
+		if (milliseconds_passed >= 200) {
 			F();
 			milliseconds_passed = 0;
 		}
@@ -72,6 +89,7 @@ bot::CombatSpin::~CombatSpin() {
 
 bool bot::CombatSpin::Execute() {
 	Combat::Execute();
+	Sleep(100);
 #if defined (COMBAT_SHOW_DEBUG_MESSAGES)
 	printf("[COMBAT] Spamming F done.\nSpamming Tab..\n");
 #endif
@@ -81,7 +99,7 @@ bool bot::CombatSpin::Execute() {
 	double milliseconds_passed;
 	while (bns_instance->GetTargetHP() >= 1) {
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
-		if (milliseconds_passed >= 50) {
+		if (milliseconds_passed >= 200) {
 			Tab();
 			milliseconds_passed = 0;
 		}

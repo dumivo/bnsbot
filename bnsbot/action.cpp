@@ -41,6 +41,11 @@ void bot::UIF() {
 	bns->SendActionEasy(0x11, 2);
 }
 
+void bot::PortalF() {
+	Bns *bns = Bns::getInstance();
+	bns->SendActionEasy(0x13, 2);
+}
+
 void bot::PickAllF() {
 	Bns *bns = Bns::getInstance();
 	bns->SendActionEasy(0x14, 2);
