@@ -26,7 +26,7 @@ Bns::Bns() {
 	base_shipping_ = (uintptr_t)GetModuleHandle(L"bsengine_shipping64.dll");
 	base_player_ = GetBasePlayer();
 	base_target_hp_ = GetBaseTargetHP();
-	keybd_device_ = 0x00000000FA2CBF30;
+	base_keybd_device_ = GetBaseKeybdDevice();
 
 	SendPacket = (sigs::SendPacket)(base_client_ + 0xFB9D60);
 	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
@@ -57,6 +57,9 @@ Bns::Bns() {
 	ExitLoadingScreen = (sigs::ExitLoadingScreen) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x40\x53\x48\x83\xEC\x40\x48\x83\x79\x18\x00\x48\x8B\xD9\x0F\x84\x00\x00\x00\x00\x48\x83\xC9\xFF",
 		"xxxxxxxxxxxxxxxx????xxxx");
+	SendKey = (sigs::SendKey) Pattern(base_client_, 0xB000000,
+		(BYTE *)"\x40\x55\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x00\x00\x00\x00\x00\x00\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x45\x0F\xB6\xF0\x48\x8B\xFA\x48\x8B\xD9\x4C\x8B\x79\x08\x4D\x85\xFF",
+		"xxxxxxxxxxxxx??????x????????????????xxxxxxxxxxxxxxxxx");
 	EInterfaceGetInstance = (sigs::EInterfaceGetInstance) GetProcAddress((HMODULE)base_shipping_, "EInterfaceGetInstance");
 
 
@@ -78,6 +81,10 @@ Bns::Bns() {
 	0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x49, 0x00, 0x5F, 0x00, 0x53, 0x00, 0x57, 0x00, 0x30, 0x00, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00
 	};
+
+	sendkey
+	\x40\x55\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x00\x00\x00\x00\x00\x00\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x45\x0F\xB6\xF0\x48\x8B\xFA\x48\x8B\xD9\x4C\x8B\x79\x08\x4D\x85\xFF
+	xxxxxxxxxxxxx??????x????????????????xxxxxxxxxxxxxxxxx
 	*/
 
 	packet_rcx_ = 0;
@@ -192,6 +199,32 @@ uintptr_t bns::Bns::GetTargetHPAddress() {
 	return GetAddressByPointer(base_target_hp_, offsets);
 }
 
+uintptr_t Bns::GetBaseKeybdDevice() {
+	const BYTE *pattern = (BYTE *) "\x48\x8B\x0D\x08\xB0\x52\x01\x48\x00\x00\x00\x00\x00\x00\x00\x74\x1B\x00\x00\x00\x00\x00\x00\x00\x48\x83\xC1\x08\x48\x8B\x01\x48\x8B\xD3\xFF\x50\x08";
+	const char *mask = "xxx????x???????xx???????xxxxxxxxxxxxx";
+	return ScanBaseRelative(base_client_, pattern, mask, 0x7, 0x3, 0x4);
+}
+
+uintptr_t bns::Bns::GetKeybdDevice() {
+	// Split them up because of an add rcx, 0x8
+	const std::vector<uintptr_t> offsets1 = { 0x0, 0x88, 0x0 };
+	const std::vector<uintptr_t> offsets2 = { 0x18, 0x0}; 
+	uintptr_t adr1 = GetAddressByPointer(base_keybd_device_, offsets1);
+	if (!adr1) {
+		return 0;
+	}
+
+	adr1 = GetAddressByPointer(adr1, offsets2);
+	if (!adr1) {
+		return 0;
+	}
+	adr1 += 0x128E8;
+	adr1 -= 0x18;
+	adr1 += 0x8DD90;
+	return adr1;
+
+}
+
 bool bns::Bns::PlayerIsBusy() {
 	uintptr_t player = Bns::GetPlayerAddress();
 	if (!player) {
@@ -207,10 +240,6 @@ void bns::Bns::SetKeybdDevice(uintptr_t keybd_device) {
 		printf("[BNS] Changed keybd_device to %p.\n", (void *)keybd_device_);
 #endif
 	}
-}
-
-uintptr_t bns::Bns::GetKeybdDevice() {
-	return 0x00000000FA2CBF30;
 }
 
 void bns::Bns::SetTargetHP(unsigned long hp) {
@@ -254,14 +283,16 @@ bool bns::Bns::IsTargetDead() {
 }
 
 void bns::Bns::SendKeyboardEasy(int a, int b) {
-	if (keybd_device_) {
-		SendKeyboard(keybd_device_, a, b);
+	uintptr_t keybd_device = GetKeybdDevice();
+	if (keybd_device) {
+		SendKeyboard(keybd_device, a, b);
 	}
 }
 
 void bns::Bns::SendActionEasy(int a, int b) {
-	if (keybd_device_) {
-		uintptr_t res = (uintptr_t)SendAction(keybd_device_, a, b);
+	uintptr_t keybd_device = GetKeybdDevice();
+	if (keybd_device) {
+		uintptr_t res = (uintptr_t)SendAction(keybd_device, a, b);
 		if (!(res & 1)) {
 			//printf("Sendaction returned 0 (%p)\n", (void *)res);
 		}
@@ -269,8 +300,9 @@ void bns::Bns::SendActionEasy(int a, int b) {
 }
 
 void bns::Bns::SendTabEasy() {
-	if (keybd_device_) {
-		SendTab(keybd_device_);
+	uintptr_t keybd_device = GetKeybdDevice();
+	if (keybd_device) {
+		SendTab(keybd_device);
 	}
 }
 
@@ -281,9 +313,16 @@ void bns::Bns::SendEscEasy() {
 }
 
 void bns::Bns::SendPacketEasy(void * data) {
-	if (packet_rcx_ && packet_rdx_) {
-		SendPacket(packet_rcx_, packet_rdx_, data);
+	uintptr_t packet_rcx = GetAddressByPointer(base_client_ + 0x01816148, std::vector<uintptr_t> {0x0});
+	uintptr_t packet_rdx = GetAddressByPointer(base_client_ + 0x018140E0, std::vector<uintptr_t> {0x48, 0x0});
+	if (packet_rcx && packet_rdx) {
+		printf("Sending packet with: %p %p\n", (void *)packet_rcx, (void *)packet_rdx);
+		SendPacket(packet_rcx, packet_rdx, data);
 	}
+	else {
+		printf("[SendPacketEasy] Error\n");
+	}
+	
 }
 
 bool bns::Bns::SendMoveEasy(const coord::Coord & destination) {

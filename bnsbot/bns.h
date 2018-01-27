@@ -20,6 +20,7 @@ namespace bns {
 		typedef bool (__fastcall *SendMove2)(uintptr_t bns_interface, float x, float y, float z);
 		typedef uintptr_t(__fastcall *EInterfaceGetInstance)();
 		typedef void *(__fastcall *ExitLoadingScreen)(uintptr_t rcx);
+		typedef void *(__fastcall *SendKey)(uintptr_t rcx, char *data, int r8);
 	}
 
 	class Bns {
@@ -27,7 +28,7 @@ namespace bns {
 		// Base addresses of modules.
 		uintptr_t base_client_, base_shipping_;
 		// Base addresses derived from base addresses of modules.
-		uintptr_t base_player_, base_target_hp_;
+		uintptr_t base_player_, base_target_hp_, base_keybd_device_;
 		// Base structures, devices, things you have to pass as arguments..
 		uintptr_t keybd_device_;
 
@@ -45,6 +46,7 @@ namespace bns {
 
 		uintptr_t GetBasePlayer();
 		uintptr_t GetBaseTargetHP();
+		uintptr_t GetBaseKeybdDevice();
 		
 	public:
 		std::map<char *, char *> item;
@@ -101,5 +103,6 @@ namespace bns {
 		sigs::EInterfaceGetInstance EInterfaceGetInstance;
 		sigs::SendMove2 SendMove2;
 		sigs::ExitLoadingScreen ExitLoadingScreen;
+		sigs::SendKey SendKey;
 	};
 }

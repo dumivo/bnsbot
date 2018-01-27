@@ -8,8 +8,6 @@
 #include "path.h"
 #include "bot.h"
 
-#define offset 0xF911E0;
-
 typedef void *(__fastcall *oFunc)(void *rcx, void *rdx, void *r8);
 oFunc Func;
 
@@ -55,10 +53,12 @@ DWORD WINAPI MainThread(LPVOID param) {
 	printf("SendEscape = %p\n", bns->SendEscape);
 	printf("UpdateKeybdDevice = %p\n", bns->UpdateKeybdDevice);
 	printf("InventoryEvent = %p\n", bns->InventoryEvent);
+	printf("SendKey = %p", (void *)bns->SendKey);
 	printf("===== BNSFUNCTIONS =====\n");
 	printf("===== ADDRESSES =====\n");
 	printf("player = %p\n", bns->GetPlayerAddress());
 	printf("target = %p\n", bns->GetTargetHPAddress());
+	printf("keybd_device = %p\n", bns->GetKeybdDevice());
 	printf("===== ADDRESSES =====\n");
 
 	bot::dll = (HMODULE) param;
