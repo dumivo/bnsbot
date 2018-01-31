@@ -2,6 +2,7 @@
 #include "coord.h"
 #include "bns.h"
 #include "bot.h"
+#include "action.h"
 
 #include <Windows.h>
 #include <vector>
@@ -11,12 +12,12 @@ using namespace bot;
 
 void bot::Path::SkipCutscene(bool is_robot) {
 	using namespace bns;
+	Sleep(5000);
 	char data[] = {
 		0xB0, 0x98, 0x39, 0x41, 0x01, 0x00, 0x00, 0x00, 0x10, 0xE0, 0x5C, 0x0A, 0x01, 0x00, 0x00, 0x00,
 		0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x83, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 83 robot
 		0x49, 0x00, 0x5F, 0x00, 0x53, 0x00, 0x57, 0x00, 0x30, 0x00, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00 // 38 robot
 	};
-	Sleep(5000);
 	Bns *bns = Bns::getInstance();
 	printf("[EXIT_CUTSCENE] hm.. let's escape this bullshit\n");
 	if (!is_robot) {
@@ -77,10 +78,10 @@ bool Path::Execute() {
 		}
 
 		// Clear the last Move before going onto the next.. idk sometimes we get nasty crashes..
-		while (bns_instance->PlayerIsBusy()) {
+		/*while (bns_instance->PlayerIsBusy()) {
 			printf("[PATH] Oh player is still busy moving.\n");
 			Sleep(1000);
-		}
+		}*/
 
 		retry = false;
 		auto &element = path_[i];
@@ -93,24 +94,37 @@ bool Path::Execute() {
 			continue;
 		}
 
+		if (dirty_ == 3) {
+			//Tab();
+		}
+
 		// Block until player reached destination.
 		// Retry if player is stuck.
 		clock_t start_time = clock();
 		double seconds_passed;
 		while (bns_instance->PlayerIsBusy() && !retry) {
-			Sleep(500);
+			Sleep(250);
 			// Refreshing player address
 			player = bns_instance->GetPlayerAddress();
 			seconds_passed = (clock() - start_time) / CLOCKS_PER_SEC;
 			if (seconds_passed >= 1 && player) {
 				// Set retry to true if we haven't moved much after a second.
 				float new_dist = coord::GetDistance(bns_instance->GetPlayerCoord(), start_coords);
-				if (new_dist <= 4) {
+				if (new_dist <= 50) {
+					printf("Player is stuck? Distance=%f retrying..\n", new_dist);
+					printf("This shouldn't happen and you're probably freezed.\n");
+					printf("player=%p\n", (void *)player);
 					retry = true;
 				}
 				start_time = clock();
 				start_coords = bns_instance->GetPlayerCoord();
 			}
+		}
+
+		if (i == path_.size() - 1 && dirty_ == 4) {
+			printf("Sleeping\n");
+			Sleep(50000);
+			dirty_ = 0;
 		}
 
 		// Check if we're actually at our destination
@@ -119,8 +133,9 @@ bool Path::Execute() {
 		// below should only be for loading screens
 		start_coords = bns_instance->GetPlayerCoord();
 		float distance = coord::GetDistance(start_coords, element);
-		if (distance >= 50) {
-			printf("[PATH] Player has reached destination, but not physically..\n", distance);
+		if (distance >= 200) {
+			printf("[PATH] Player has reached destination, but not physically..\nDistance"
+				"is %f\n", distance);
 			if (dirty_ != 0) {
 				printf("[PATH] dirty is not zero.. so let's see if we should skip\n");
 				printf("[PATH] Doing some dirty things now.\n");
@@ -128,7 +143,7 @@ bool Path::Execute() {
 					if (dirty_ == 1) {
 						SkipCutscene(true);
 					}
-					else {
+					else if (dirty_ == 2){
 						SkipCutscene(false);
 					}
 				}
@@ -160,10 +175,10 @@ bool Path::Execute() {
 		}
 		else {
 			printf("Retrying move..\n");
-			Sleep(5000);
+			Sleep(2000);
 		}
 
-		Sleep(500);
+		Sleep(250);
 	}
 	return false;
 }

@@ -60,11 +60,20 @@ Bns::Bns() {
 	SendKey = (sigs::SendKey) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x40\x55\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x00\x00\x00\x00\x00\x00\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x45\x0F\xB6\xF0\x48\x8B\xFA\x48\x8B\xD9\x4C\x8B\x79\x08\x4D\x85\xFF",
 		"xxxxxxxxxxxxx??????x????????????????xxxxxxxxxxxxxxxxx");
+	SendKeyUp = (sigs::SendKeyUp) Pattern(base_client_, 0x1000000,
+		(BYTE *)"\x40\x57\x41\x54\x41\x55\x41\x56\x41\x57\xB8\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x48\x2B\xE0\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x4C\x8B\xEA\x48\x8B\xD9\x48\x8B\x05\x6B\xF4\x9A\x00",
+		"xxxxxxxxxxx????x????xxxx????????????????????????????????xxxxxxxxxxxxx");
 	EInterfaceGetInstance = (sigs::EInterfaceGetInstance) GetProcAddress((HMODULE)base_shipping_, "EInterfaceGetInstance");
 
-
+	cutscene_if_exists_ = Pattern(base_client_, 0x1000000,
+		(BYTE *)"\x0F\x85\x00\x00\x00\x00\x33\xC0\x48\x83\xC9\xFF\x48\x8D\x7B\x20\x66\xF2\xAF\x48\xF7\xD1\x48\x83\xF9\x01",
+		"xx????xxxxxxxxxxxxxxxxxxxx");
 
 	/*
+
+	\x40\x57\x41\x54\x41\x55\x41\x56\x41\x57\xB8\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x48\x2B\xE0\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x4C\x8B\xEA\x48\x8B\xD9\x48\x8B\x05\x6B\xF4\x9A\x00
+	xxxxxxxxxxx????x????xxxx????????????????????????????????xxxxxxxxxxxxx
+
 	base monsterhp
 	\x48\x8B\x0D\x2C\x07\x1E\x01\x48\x89\x74\x24\x30\x33\xF6\x48\x85\xC9
 	xxx????xxxxxxxxxx
@@ -85,6 +94,13 @@ Bns::Bns() {
 	sendkey
 	\x40\x55\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x00\x00\x00\x00\x00\x00\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x45\x0F\xB6\xF0\x48\x8B\xFA\x48\x8B\xD9\x4C\x8B\x79\x08\x4D\x85\xFF
 	xxxxxxxxxxxxx??????x????????????????xxxxxxxxxxxxxxxxx
+
+	Pattern to jnz instruction of PushCutscene. patch to jmp and you'll skip every cutscene.
+	\x0F\x85\x00\x00\x00\x00\x33\xC0\x48\x83\xC9\xFF\x48\x8D\x7B\x20\x66\xF2\xAF\x48\xF7\xD1\x48\x83\xF9\x01
+	xx????xxxxxxxxxxxxxxxxxxxx
+	0f 85 45 08 00 00
+	e9 46 08 00 00 90
+
 	*/
 
 	packet_rcx_ = 0;
@@ -220,7 +236,7 @@ uintptr_t bns::Bns::GetKeybdDevice() {
 	}
 	adr1 += 0x128E8;
 	adr1 -= 0x18;
-	adr1 += 0x8DD90;
+	//adr1 += 0x8DD90;
 	return adr1;
 
 }
@@ -312,9 +328,40 @@ void bns::Bns::SendEscEasy() {
 	}
 }
 
+void bns::Bns::SendKeyEasy(unsigned char id) {
+	unsigned char data[0x20] =
+	{
+		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x3D, 0x4F, 0xBB, 0x37, 0x18, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+	};
+	uintptr_t keybd_device = GetKeybdDevice();
+	if (keybd_device) {
+		SendKey(keybd_device, data, 0);
+	}
+	
+}
+
+void bns::Bns::SendKeyUpEasy(unsigned char id) {
+	unsigned char data[0x20] =
+	{
+		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x3D, 0x4F, 0xBB, 0x37, 0x18, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+	};
+	uintptr_t keybd_device = GetKeybdDevice();
+	if (keybd_device) {
+		SendKeyUp(keybd_device, data);
+	}
+}
+
+void bns::Bns::SendKeyEasyOnce(unsigned char id) {
+	SendKeyEasy(id);
+	Sleep(50);
+	SendKeyUpEasy(id);
+}
+
 void bns::Bns::SendPacketEasy(void * data) {
-	uintptr_t packet_rcx = GetAddressByPointer(base_client_ + 0x01816148, std::vector<uintptr_t> {0x0});
-	uintptr_t packet_rdx = GetAddressByPointer(base_client_ + 0x018140E0, std::vector<uintptr_t> {0x48, 0x0});
+	uintptr_t packet_rcx = GetAddressByPointer(base_client_, std::vector<uintptr_t> {0x01816148, 0x0});
+	uintptr_t packet_rdx = GetAddressByPointer(base_client_, std::vector<uintptr_t> {0x018140E0, 0x48, 0x0});
 	if (packet_rcx && packet_rdx) {
 		printf("Sending packet with: %p %p\n", (void *)packet_rcx, (void *)packet_rdx);
 		SendPacket(packet_rcx, packet_rdx, data);
@@ -337,4 +384,21 @@ bool bns::Bns::SendMoveEasy(const coord::Coord & destination) {
 void bns::Bns::SetSendPacketStructs(uintptr_t rcx, uintptr_t rdx) {
 	packet_rcx_ = rcx;
 	packet_rdx_ = rdx;
+}
+
+bool bns::Bns::SkipCutscene(bool skip) {
+	if (!cutscene_if_exists_) {
+		return false;
+	}
+	printf("Cutscene_if_exists = %p\n", (void *) cutscene_if_exists_);
+	// 0f 85 45 08 00 00
+	// e9 46 08 00 00 90
+	unsigned char *patch = (unsigned char *)cutscene_if_exists_;
+	patch[0] = 0xE9; // JMP
+	memcpy(patch + 0x1, patch + 0x2, 0x4); // Address
+	// JMP opcode is one byte less than JNE, that's why we have to adjust address by one.
+	patch[1] += 0x1;
+	patch[5] = 0x90;
+
+	return true;
 }

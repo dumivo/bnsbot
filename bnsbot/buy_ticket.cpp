@@ -16,5 +16,7 @@ bool bot::BuyTicket::Execute() {
 	// TODO: wait for inventory event of orb.. but meh not now. Not yet.
 	Sleep(500);
 	UIF();
+	Sleep(200);
+	Nothing();
 	return false;
 }

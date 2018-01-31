@@ -12,23 +12,23 @@ void SendPacket(int a, int b) {
 
 void bot::X() {
 	Bns *bns = Bns::getInstance();
-	bns->SendKeyboardEasy(1, 5);
+	bns->SendKeyEasyOnce(0x58);
 }
 
 void bot::Z() {
 	Bns *bns = Bns::getInstance();
-	bns->SendKeyboardEasy(1, 4);
+	bns->SendKeyEasyOnce(0x59);
 	bot::cooldown_start_time = clock();
 }
 
 void bot::V() {
 	Bns *bns = Bns::getInstance();
-	bns->SendKeyboardEasy(1, 7);
+	bns->SendKeyEasyOnce(0x56);
 }
 
 void bot::F() {
 	Bns *bns = Bns::getInstance();
-	bns->SendActionEasy(1, 2);
+	bns->SendKeyEasyOnce(0x46);
 }
 
 void bot::Q() {
@@ -38,22 +38,43 @@ void bot::Q() {
 
 void bot::UIF() {
 	Bns *bns = Bns::getInstance();
-	bns->SendActionEasy(0x11, 2);
+	bns->SendKeyEasyOnce(0x46);
+}
+
+void bot::One() {
+	Bns *bns = Bns::getInstance();
+	bns->SendKeyEasyOnce(0x31);
+}
+
+void bot::Three() {
+	Bns *bns = Bns::getInstance();
+	bns->SendKeyEasyOnce(0x33);
 }
 
 void bot::PortalF() {
 	Bns *bns = Bns::getInstance();
-	bns->SendActionEasy(0x13, 2);
+	bns->SendKeyEasyOnce(0x46);
 }
 
 void bot::PickAllF() {
 	Bns *bns = Bns::getInstance();
-	bns->SendActionEasy(0x14, 2);
+	bns->SendKeyEasyOnce(0x46);
+}
+
+// Actually presses "7".
+void bot::Nothing() {
+	Bns *bns = Bns::getInstance();
+	bns->SendKeyEasyOnce(0x37);
+}
+
+void bot::LMB() {
+	Bns *bns = Bns::getInstance();
+	bns->SendKeyEasyOnce(0x52);
 }
 
 void bot::Tab() {
 	Bns *bns = Bns::getInstance();
-	bns->SendTabEasy();
+	bns->SendKeyEasyOnce(0x09);
 }
 
 void bot::Esc() {

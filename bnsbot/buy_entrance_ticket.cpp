@@ -29,3 +29,17 @@ bool bot::BuyEntranceTicket::Execute() {
 	Sleep(100);
 	return false;
 }
+
+bot::BuyEntranceTicketF9::BuyEntranceTicketF9() {
+}
+
+bot::BuyEntranceTicketF9::~BuyEntranceTicketF9() {
+}
+
+bool bot::BuyEntranceTicketF9::Execute() {
+	using namespace bns;
+	Bns *bns = Bns::getInstance();
+	bns->SendPacketEasy((void *)packets::mushin_f9);
+	Sleep(100);
+	return false;
+}

@@ -8,4 +8,11 @@ namespace bot {
 		~BuyEntranceTicket();
 		bool Execute();
 	};
+
+	class BuyEntranceTicketF9 : public Command {
+	public:
+		BuyEntranceTicketF9();
+		~BuyEntranceTicketF9();
+		bool Execute();
+	};
 }

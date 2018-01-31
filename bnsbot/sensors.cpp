@@ -65,7 +65,7 @@ void * hook::SendPacket(uintptr_t rcx, uintptr_t rdx, void * data) {
 
 bool * hook::Move(uintptr_t player, float x, float y, float z) {
 	//bool *rtn = oMove(player, x, y, z);
-	printf("%p\n{ %ff, %ff, %ff }\n", (void *)player, x, y, z);
+	printf("{ %ff, %ff, %ff },\n", x, y, z);
 	return oMove(player, x, y, z);
 }
 const char fake_exc_data[] =
@@ -104,18 +104,18 @@ bool hook::SetupHooks() {
 		(BYTE *)hook::SendPacket);
 	Detour_SendPacket->Hook();
 	hook::oSendPacket =
-		Detour_SendPacket->GetOriginal<bns::sigs::SendPacket>();
+		Detour_SendPacket->GetOriginal<bns::sigs::SendPacket>();*/
 
-	// SendPacket
-	Detour_Move->SetupHook((BYTE *)bns_instance->Move,
+	// Move
+	/*Detour_Move->SetupHook((BYTE *)bns_instance->Move,
 		(BYTE *)hook::Move);
-	//Detour_Move->Hook();
-	//hook::oMove =
-	//	Detour_Move->GetOriginal<bns::sigs::Move>();
+	Detour_Move->Hook();
+	hook::oMove =
+		Detour_Move->GetOriginal<bns::sigs::Move>();*/
 
 	// Exc
-	Detour_Exc->SetupHook((BYTE *)bns_instance->Exc,
-		(BYTE *)hook::Exc);
+	//Detour_Exc->SetupHook((BYTE *)bns_instance->Exc,
+		//(BYTE *)hook::Exc);
 	//Detour_Exc->Hook();
 	//hook::oExc =
 	//	Detour_Exc->GetOriginal<bns::sigs::Exc>();*/

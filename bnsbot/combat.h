@@ -18,4 +18,11 @@ namespace bot {
 		bool Execute();
 	};
 
+	class CombatSnek : public Combat {
+	public:
+		CombatSnek();
+		~CombatSnek();
+		bool Execute();
+	};
+
 }

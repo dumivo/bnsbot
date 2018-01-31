@@ -55,16 +55,17 @@ bool bot::LoadingPath::Execute() {
 
 			Sleep(250);
 
+			// To me from the future: yes I know this is cringy but.. you know I didn't have much time early on
+			if (sleepy_) {
+				Sleep(1000);
+				return false;
+			}
 			
 			// Wait for loading screen to pop up.
 			while (bns_instance->PlayerIsBusy()) {
 				Sleep(50);
 			}
 
-			// To me from the future: yes I know this is cringy but.. you know I didn't have much time early on
-			if (sleepy_) {
-				return false;
-			}
 
 #ifdef LOADING_PATH_DEBUG_MESSAGES
 			printf("[LOADING_PATH] Loading screen popped up!\n");

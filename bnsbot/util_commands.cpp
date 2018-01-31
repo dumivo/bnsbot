@@ -32,6 +32,7 @@ bot::UseF::~UseF() {
 }
 
 bool bot::UseF::Execute() {
+	Sleep(1000);
 	UIF();
 	return false;
 }
