@@ -4,7 +4,6 @@ namespace bot {
 	public:
 		Command();
 		~Command();
-
 		virtual bool Execute();
 	};
 }

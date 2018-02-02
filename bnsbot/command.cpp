@@ -8,6 +8,10 @@ bot::Command::~Command() {
 	printf("Freed a command :)\n");
 }
 
+/*bot::Command::~Command() {
+	printf("Freed a command :)\n");
+}*/
+
 bool bot::Command::Execute() {
 	return false;
 }

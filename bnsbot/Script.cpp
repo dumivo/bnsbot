@@ -2,6 +2,3 @@
 
 bot::Script::Script() {
 }
-
-bot::Script::~Script() {
-}

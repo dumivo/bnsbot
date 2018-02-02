@@ -23,10 +23,12 @@ Bns *Bns::getInstance() {
 
 Bns::Bns() {
 	base_client_ = (uintptr_t)GetModuleHandle(NULL);
-	base_shipping_ = (uintptr_t)GetModuleHandle(L"bsengine_shipping64.dll");
+	base_shipping_ = (uintptr_t)LoadLibrary(L"bsengine_shipping64.dll");
 	base_player_ = GetBasePlayer();
 	base_target_hp_ = GetBaseTargetHP();
 	base_keybd_device_ = GetBaseKeybdDevice();
+
+	cooldown_start_time_ = 0;
 
 	SendPacket = (sigs::SendPacket)(base_client_ + 0xFB9D60);
 	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
@@ -109,10 +111,6 @@ Bns::Bns() {
 	item.insert(std::pair<char *, char *>("\xA\xC", "Moonstone"));
 }
 
-Bns::~Bns() {
-	has_instance_ = false;
-}
-
 uintptr_t ScanBaseRelative(uintptr_t start_address, const BYTE *pattern, const char *mask,
 	unsigned int size, unsigned int offset, unsigned int len) {
 	BYTE *opcode = (BYTE *)Pattern(start_address, 0xB000000, pattern, mask);
@@ -128,7 +126,7 @@ uintptr_t ScanBaseRelative(uintptr_t start_address, const BYTE *pattern, const c
 	memcpy(base_adr_raw, opcode + offset, len * sizeof(BYTE));
 
 	// Convert byte-array to uintptr_t value.
-	for (int i = 0; i < len; i++) {
+	for (unsigned int i = 0; i < len; i++) {
 		base_adr += base_adr_raw[i] << 8 * i;
 	}
 
@@ -222,23 +220,31 @@ uintptr_t Bns::GetBaseKeybdDevice() {
 }
 
 uintptr_t bns::Bns::GetKeybdDevice() {
+	return keybd_device_;
+
+}
+
+
+void bns::Bns::RefreshKeybdDevice() {
 	// Split them up because of an add rcx, 0x8
 	const std::vector<uintptr_t> offsets1 = { 0x0, 0x88, 0x0 };
-	const std::vector<uintptr_t> offsets2 = { 0x18, 0x0}; 
+	const std::vector<uintptr_t> offsets2 = { 0x18, 0x0 };
 	uintptr_t adr1 = GetAddressByPointer(base_keybd_device_, offsets1);
 	if (!adr1) {
-		return 0;
+		printf("Error refreshkeybddvice\n");
+		return;
 	}
 
 	adr1 = GetAddressByPointer(adr1, offsets2);
 	if (!adr1) {
-		return 0;
+		printf("Error refreshkeybddvice\n");
+		return;
 	}
 	adr1 += 0x128E8;
 	adr1 -= 0x18;
 	//adr1 += 0x8DD90;
-	return adr1;
-
+	printf("Updates keybd_device to %p\n", (void *)adr1);
+	keybd_device_ = adr1;
 }
 
 bool bns::Bns::PlayerIsBusy() {
@@ -247,15 +253,6 @@ bool bns::Bns::PlayerIsBusy() {
 		return false;
 	}
 	return *(bool *)(player + 0x23C0 + 0x8);
-}
-
-void bns::Bns::SetKeybdDevice(uintptr_t keybd_device) {
-	if (keybd_device_ != keybd_device) {
-		keybd_device_ = keybd_device;
-#if defined (BNS_SHOW_DEBUG_MESSAGES)
-		printf("[BNS] Changed keybd_device to %p.\n", (void *)keybd_device_);
-#endif
-	}
 }
 
 void bns::Bns::SetTargetHP(unsigned long hp) {
@@ -332,11 +329,11 @@ void bns::Bns::SendKeyEasy(unsigned char id) {
 	unsigned char data[0x20] =
 	{
 		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x3D, 0x4F, 0xBB, 0x37, 0x18, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 	};
 	uintptr_t keybd_device = GetKeybdDevice();
 	if (keybd_device) {
-		SendKey(keybd_device, data, 0);
+		SendKey(keybd_device, data);
 	}
 	
 }
@@ -345,7 +342,7 @@ void bns::Bns::SendKeyUpEasy(unsigned char id) {
 	unsigned char data[0x20] =
 	{
 		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x3D, 0x4F, 0xBB, 0x37, 0x18, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	};
 	uintptr_t keybd_device = GetKeybdDevice();
 	if (keybd_device) {
@@ -355,8 +352,9 @@ void bns::Bns::SendKeyUpEasy(unsigned char id) {
 
 void bns::Bns::SendKeyEasyOnce(unsigned char id) {
 	SendKeyEasy(id);
-	Sleep(50);
+	Sleep(25);
 	SendKeyUpEasy(id);
+	Sleep(50);
 }
 
 void bns::Bns::SendPacketEasy(void * data) {
@@ -401,4 +399,12 @@ bool bns::Bns::SkipCutscene(bool skip) {
 	patch[5] = 0x90;
 
 	return true;
+}
+
+double bns::Bns::GetCooldownStartTime() {
+	return cooldown_start_time_;
+}
+
+void bns::Bns::SetCooldownStartTime() {
+	cooldown_start_time_ = clock();
 }

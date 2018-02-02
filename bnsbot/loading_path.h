@@ -11,7 +11,6 @@ namespace bot {
 	public:
 		LoadingPath(std::vector<coord::Coord>);
 		LoadingPath(std::vector<coord::Coord>, bool sleepy);
-		~LoadingPath();
 
 		bool Execute();
 	};

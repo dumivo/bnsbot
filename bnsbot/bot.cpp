@@ -34,9 +34,8 @@ bot::State bot::GetState() {
 	return bot_state;
 }
 
-std::vector<std::shared_ptr<bot::Command>> NaksunHallScript() {
+void NaksunHallScript(std::vector<std::shared_ptr<bot::Command>>& script) {
 	using namespace bot;
-	std::vector<std::shared_ptr<Command>> script;
 
 	// Go to mushin hall 2
 	script.push_back(std::shared_ptr<Command>(new LoadingPath(std::vector<coord::Coord> {
@@ -50,31 +49,24 @@ std::vector<std::shared_ptr<bot::Command>> NaksunHallScript() {
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
 		{ -49862.242188f, 4815.891113f, -8794.495117f },
 	})));
-
-	return script;
 }
 
 // Returns a script starting from f13 spawn point until end.
-std::vector<std::shared_ptr<bot::Command>> NaksunScriptF13() {
+void NaksunScriptF13(std::vector<std::shared_ptr<bot::Command>>& script) {
 	using namespace bot;
-	std::vector<std::shared_ptr<Command>> script;
 	// Go to wheel
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47512.339844f, 9216.077148f, 26070.933594f },
-		{ -47950.460938f, 9750.791016f, 26070.445313f }
-	})));
-	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{-48366.7f, 10034.2f, 26071.8f},
-		{ -48472.2f, 10050.0f, 26072.6f }
+		{ -48146.796875f, 9886.035156f, 26070.945313f },
+		{ -48472.179688f, 9986.939453f, 26071.937500f },
 	})));
 	// Buy Orb
 	script.push_back(std::shared_ptr<Command>(new BuyTicket()));
 	// Go to f13
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47520.6f, 9702.38f, 26073.5f },
-		{ -47521.0f, 9828.79f, 26075.8f },
-		{ -47512.339844f, 9216.077148f, 26070.933594f },
-		{ -47521.0f, 9828.79f, 26075.8f },
+		{ -47536.691406f, 9676.743164f, 26073.654297f },
+		{ -47524.550781f, 9994.874023f, 26074.398438f },
+		{ -47536.691406f, 9676.743164f, 26073.654297f },
+		{ -47518.839844f, 9890.558594f, 26075.875000f },
 	})));
 	// Kill
 	script.push_back(std::shared_ptr<Command>(new CombatSpin()));
@@ -133,88 +125,25 @@ std::vector<std::shared_ptr<bot::Command>> NaksunScriptF13() {
 
 	// Loading screen exit
 	script.push_back(std::shared_ptr<Command>(new Wait(30000)));
-
-	return script;
 }
 
 // Returns a script starting from mushin spawn to f13-15 until end.
-std::vector<std::shared_ptr<bot::Command>> NaksunScript() {
+void NaksunScript(std::vector<std::shared_ptr<bot::Command>>& script) {
+	printf("Naksun F13\n");
 	using namespace bot;
-	// Set up script
-	{
-		/*Command *mushin_to_room = new LoadingPath(std::vector<coord::Coord> {
-			{ -53739.0f, 6367.32f, -9611.62f },
-			{ -53752.6f, 9084.30f, -9406.71f },
-			{ -53260.7f, 9625.15f, -9112.16f }
-		});
-		Command *room_to_f13_1 = new Path(std::vector<coord::Coord> {
-			{ -49862.242188f, 4815.891113f, -8794.495117f },
-			{ -49695.867188f, 4560.463379f, -8795.165039f }
-		});
-		Command *buy_entrance_ticket = new BuyEntranceTicket();
-		Command *room_to_f13_2 = new LoadingPath(std::vector<coord::Coord> {
-			{ -49634.167969f, 4807.551270f, -8795.016602f },
-			{ -49454.195313f, 4812.831543f, -8795.212891f }
-		});
-		Command *f13_to_fujin = new Path(std::vector<coord::Coord> {
-			{ -47512.339844f, 9216.077148f, 26070.933594f },
-			{ -47950.460938f, 9750.791016f, 26070.445313f }
-		});
-		Command *go_to_wheel = new Path(std::vector<coord::Coord> {
-			{-48366.7f, 10034.2f, 26071.8f},
-			{ -48472.2f, 10050.0f, 26072.6f }
-		});
-		Command *buy_orb = new BuyTicket();
-		Command *back_to_fujin = new Path(std::vector<coord::Coord> {
-			{ -47520.6f, 9702.38f, 26073.5f },
-			{ -47521.0f, 9828.79f, 26075.8f },
-			{ -47512.339844f, 9216.077148f, 26070.933594f },
-			{ -47521.0f, 9828.79f, 26075.8f },
-		});
-		Command *kill = new CombatSpin();
-		Command *loot = new Loot();
-		Command *fujin_to_f14 = new Path(std::vector<coord::Coord> {
-			{ -47520.2f, 10238.0f, 26073.6f },
-			{ -47521.2f, 11562.5f, 26250.5f },
-			{ -47533.0f, 11763.3f, 26262.4f },
-			{ -46799.5f, 11717.4f, 26260.2f },
-			{ -45906.7f, 10856.1f, 26835.7f },
-			{ -45849.2f, 9300.72f, 26854.2f },
-			{ -46723.6f,8434.4f, 27431.9f },
-			{ -47487.7f, 8367.78f, 27456.1f },
-			{ -47503.9f, 8750.65f, 27595.1f },
-			{ -47522.4f, 9857.96f, 27575.1f }
-		});
-		Command *f14_to_f15 = new Path(std::vector<coord::Coord> {
-			{ -47519.4f, 11570.7f, 27762.0f },
-			{ -47530.3f, 11761.3f ,27765.1f },
-			{ -46739.3f, 11706.1f, 27771.1f },
-			{ -45865.0f, 10792.0f, 28359.4f },
-			{ -45860.7f, 9221.1f, 28374.2f },
-			{ -46690.0f, 8445.4f, 28919.7f },
-			{ -47579.5f, 8317.82f, 28960.2f },
-			{ -47520.2f, 8750.64f, 29099.2f },
-			{ -47522.5f, 9963.7f, 29078.8f }
-		});
-		Command *f15_to_exit = new Path(std::vector<coord::Coord> {
-			{ -47092.3f, 10039.4f, 29080.7f },
-			{ -46887.5f, 10038.7f, 29078.8f }
-		});
-		Command *portal_f = new UsePortalF();
-		Command *exit = new WaitLoadingScreen();*/
-	}
+	NaksunHallScript(script);
 
-	std::vector<std::shared_ptr<Command>> script = NaksunHallScript();
+	// Enter Dungeon using F13 ticket
 	script.push_back(std::shared_ptr<Command>(new BuyEntranceTicket()));
 	script.push_back(std::shared_ptr<Command>(new LoadingPath(std::vector<coord::Coord> {
 		{ -49634.167969f, 4807.551270f, -8795.016602f },
 		{ -49454.195313f, 4812.831543f, -8795.212891f }
-	})));
-	
-	auto script_dungeon = NaksunScriptF13();
-	script.insert(script.end(), script_dungeon.begin(), script_dungeon.begin());
+	}, true)));
 
-	return script;
+	// Sleep loading screen
+	script.push_back(std::shared_ptr<Command>(new Wait(20000)));
+
+	NaksunScriptF13(script);
 }
 
 std::vector<std::shared_ptr<bot::Command>> NaksunScript2() {
@@ -318,10 +247,10 @@ std::vector<std::shared_ptr<bot::Command>> NaksunScript2() {
 }
 
 // Returns a script starting from mushin spawn to f9-15 until end.
-std::vector<std::shared_ptr<bot::Command>> NaksunF9Script() {
+void NaksunF9Script(std::vector<std::shared_ptr<bot::Command>>& script) {
 	printf("Naksun F9\n");
 	using namespace bot;
-	std::vector<std::shared_ptr<Command>> script = NaksunHallScript();
+	NaksunHallScript(script);
 
 	// Enter Dungeon using F9 ticket
 	script.push_back(std::shared_ptr<Command>(new BuyEntranceTicketF9()));
@@ -422,71 +351,7 @@ std::vector<std::shared_ptr<bot::Command>> NaksunF9Script() {
 		{ -47521.753906f, 9493.828125f, 26070.611328f },
 	})));
 
-	auto script_dungeon = NaksunScriptF13();
-	script.insert(script.end(), script_dungeon.begin(), script_dungeon.end());
-
-	/*
-		F9 move to boss
-		{ -47521.136719f, 9795.482422f, 20080.558594f },
-		{ -47516.667969f, 9635.031250f, 20081.855469f },
-		{ -47522.000000f, 9869.114258f, 20081.685547f },
-		move to f10
-		{ -47513.566406f, 11210.275391f, 20161.074219f },
-		{ -47497.957031f, 11748.631836f, 20271.167969f },
-		{ -46855.441406f, 11668.635742f, 20269.001953f },
-		{ -45998.742188f, 10845.214844f, 20813.400391f },
-		{ -45813.371094f, 10532.608398f, 20863.482422f },
-		{ -45896.804688f, 9463.457031f, 20862.535156f },
-		{ -45863.078125f, 9392.676758f, 20864.816406f },
-		{ -46766.011719f, 8522.683594f, 21423.605469f },
-		{ -47123.160156f, 8329.910156f, 21456.761719f },
-		{ -47482.160156f, 8330.450195f, 21456.718750f },
-		{ -47529.222656f, 8873.143555f, 21605.037109f },
-		{ -47526.351563f, 9927.242188f, 21574.316406f },
-		move to f11
-		{ -47537.582031f, 10907.540039f, 21573.671875f },
-		{ -47510.703125f, 11285.857422f, 21661.423828f },
-		{ -47224.902344f, 11840.181641f, 21763.810547f },
-		{ -46849.828125f, 11726.875977f, 21762.060547f },
-		{ -45925.929688f, 10833.442383f, 22336.109375f },
-		{ -45844.675781f, 9342.852539f, 22355.228516f },
-		{ -46737.882813f, 8494.027344f, 22918.937500f },
-		{ -47552.644531f, 8280.803711f, 22955.587891f },
-		{ -47527.562500f, 8721.146484f, 23080.365234f },
-		{ -47529.300781f, 9892.597656f, 23073.863281f },
-		move to f12
-		{ -47522.960938f, 11249.240234f, 23158.744141f },
-		{ -47393.628906f, 11752.474609f, 23263.910156f },
-		{ -46881.632813f, 11725.844727f, 23261.550781f },
-		{ -45961.843750f, 10839.772461f, 23819.630859f },
-		{ -45784.574219f, 10260.658203f, 23856.867188f },
-		{ -45837.445313f, 9332.625000f, 23855.861328f },
-		{ -46692.445313f, 8493.021484f, 24401.796875f },
-		{ -47166.269531f, 8322.925781f, 24455.044922f },
-		{ -47495.023438f, 8331.483398f, 24455.953125f },
-		{ -47535.375000f, 8885.742188f, 24604.500000f },
-		{ -47504.171875f, 9327.171875f, 24570.097656f },
-		{ -47518.265625f, 9686.134766f, 24572.392578f },
-		{ -47519.972656f, 10036.756836f, 24572.859375f },
-		// positioning for boss
-		{ -47520.257813f, 9583.652344f, 24570.726563f },
-		{ -47519.308594f, 9848.969727f, 24572.404297f },
-		// move to loot
-		{ -47510.699219f, 9990.306641f, 24573.238281f },
-		move to f13
-		{ -47514.027344f, 11306.560547f, 24661.492188f },
-		{ -47386.363281f, 11751.125977f, 24762.933594f },
-		{ -46736.140625f, 11664.529297f, 24784.363281f },
-		{ -45943.804688f, 10860.839844f, 25316.576172f },
-		{ -45831.105469f, 9256.556641f, 25354.216797f },
-		{ -46629.894531f, 8519.644531f, 25874.443359f },
-		{ -47088.066406f, 8320.338867f, 25955.308594f },
-		{ -47499.886719f, 8334.212891f, 25955.656250f },
-		{ -47514.558594f, 8691.642578f, 26062.753906f },
-		{ -47521.753906f, 9493.828125f, 26070.611328f },
-	*/
-
-	return script;
+	NaksunScriptF13(script);
 }
 
 std::vector<std::shared_ptr<bot::Command>> TestScript() {
@@ -567,7 +432,8 @@ void bot::BotMain(LPVOID param) {
 
 	uintptr_t last_player = 0;
 	uintptr_t current_player = 0;
-	const int f9_every_f13 = 10;
+	const int f9_every_f13 = 8;
+	const bool mouse_spam = false;
 	int f13_counter = 0;
 	while (bot::GetState() != bot::Off) {
 
@@ -578,24 +444,33 @@ void bot::BotMain(LPVOID param) {
 		}
 		if (GetAsyncKeyState(VK_NUMPAD1)) {
 			printf("boom\n");
-			bns_instance->SendKeyEasy(0x0);
+			bns_instance->RefreshKeybdDevice();
 			Sleep(500);
 		}
 
 		while (bot::GetState() == bot::Running) {
 			clock_t timer = clock();
 			size_t i = 0;
-			std::vector<std::shared_ptr<Command>> script;
+			std::vector<std::shared_ptr<bot::Command>> script;
+
+			// Mouse spam?
+			if (mouse_spam) {
+				printf("Using mouse spam\n");
+				
+				script.push_back(std::shared_ptr<bot::Command>(new MouseSpam()));
+				printf("size %u\n", script.size());
+			}
+
 			// Do f9 every four f13 runs
 			printf("Deciding Script..\n");
 			if (f9_every_f13 == f13_counter) {
 				f13_counter = 0;
 				printf("Deciding F9\n");
-				script = NaksunF9Script();
+				NaksunF9Script(script);
 			}
 			else {
 				printf("Deciding F13\n");
-				script = NaksunScript2();
+				NaksunScript(script);
 			}
 			while (i < script.size() && bot::GetState() == bot::Running) {
 				script[i]->Execute();

@@ -7,21 +7,18 @@ namespace bot {
 	class Combat : public Command {
 	public:
 		Combat();
-		~Combat();
 		bool Execute();
 	};
 
 	class CombatSpin : public Combat {
 	public:
 		CombatSpin();
-		~CombatSpin();
 		bool Execute();
 	};
 
 	class CombatSnek : public Combat {
 	public:
 		CombatSnek();
-		~CombatSnek();
 		bool Execute();
 	};
 

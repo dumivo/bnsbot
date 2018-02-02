@@ -19,9 +19,6 @@ bot::LoadingPath::LoadingPath(std::vector<coord::Coord> path, bool sleepy) {
 	sleepy_ = sleepy;
 }
 
-LoadingPath::~LoadingPath() {
-}
-
 bool bot::LoadingPath::Execute() {
 	Path::Execute();
 #ifdef LOADING_PATH_DEBUG_MESSAGES

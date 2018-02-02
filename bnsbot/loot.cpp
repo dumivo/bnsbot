@@ -6,8 +6,6 @@
 bot::Loot::Loot() {
 }
 
-bot::Loot::~Loot() {
-}
 
 bool bot::Loot::Execute() {
 	// These sleep timers are really generous here because looting is like the

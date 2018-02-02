@@ -8,7 +8,6 @@ namespace bot {
 	public:
 		Wait();
 		Wait(unsigned int time_to_wait_ms);
-		~Wait();
 		bool Execute();
 	};
 
@@ -16,21 +15,18 @@ namespace bot {
 	class UseF : public Command {
 	public:
 		UseF();
-		~UseF();
 		bool Execute();
 	};
 
 	class UsePortalF : public Command {
 	public:
 		UsePortalF();
-		~UsePortalF();
 		bool Execute();
 	};
 
 	class UseEsc : public Command {
 	public:
 		UseEsc();
-		~UseEsc();
 		bool Execute();
 	};
 
@@ -38,7 +34,6 @@ namespace bot {
 	class WaitLoadingScreen : public Command {
 	public:
 		WaitLoadingScreen();
-		~WaitLoadingScreen();
 		bool Execute();
 	};
 
@@ -48,7 +43,12 @@ namespace bot {
 	public:
 		SkipCutscene(bool is_robot);
 		SkipCutscene();
-		~SkipCutscene();
+		bool Execute();
+	};
+
+	// Command for pressing F
+	class MouseSpam : public Command {
+	public:
 		bool Execute();
 	};
 }

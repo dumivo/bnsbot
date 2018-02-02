@@ -5,8 +5,6 @@
 bot::BuyEntranceTicket::BuyEntranceTicket() {
 }
 
-bot::BuyEntranceTicket::~BuyEntranceTicket() {
-}
 
 bool bot::BuyEntranceTicket::Execute() {
 	using namespace bns;
@@ -33,8 +31,6 @@ bool bot::BuyEntranceTicket::Execute() {
 bot::BuyEntranceTicketF9::BuyEntranceTicketF9() {
 }
 
-bot::BuyEntranceTicketF9::~BuyEntranceTicketF9() {
-}
 
 bool bot::BuyEntranceTicketF9::Execute() {
 	using namespace bns;

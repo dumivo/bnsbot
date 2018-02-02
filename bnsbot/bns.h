@@ -20,7 +20,7 @@ namespace bns {
 		typedef bool (__fastcall *SendMove2)(uintptr_t bns_interface, float x, float y, float z);
 		typedef uintptr_t(__fastcall *EInterfaceGetInstance)();
 		typedef void *(__fastcall *ExitLoadingScreen)(uintptr_t rcx);
-		typedef void *(__fastcall *SendKey)(uintptr_t rcx, unsigned char *data, int r8);
+		typedef void *(__fastcall *SendKey)(uintptr_t rcx, unsigned char *data);
 		typedef void *(__fastcall *SendKeyUp)(uintptr_t rcx, unsigned char *data);
 	}
 
@@ -32,6 +32,9 @@ namespace bns {
 		uintptr_t base_player_, base_target_hp_, base_keybd_device_;
 		// Base structures, devices, things you have to pass as arguments..
 		uintptr_t keybd_device_, cutscene_if_exists_;
+
+		// Used to track Z cooldown.
+		double cooldown_start_time_;
 
 		unsigned long target_hp_;
 		bool target_is_dead_;
@@ -53,7 +56,6 @@ namespace bns {
 		std::map<char *, char *> item;
 
 		static Bns *getInstance();
-		~Bns();
 
 		// Returns current Player object.
 		uintptr_t GetPlayerAddress();
@@ -71,7 +73,7 @@ namespace bns {
 		// false, if otherwise.
 		bool PlayerIsBusy();
 
-		void SetKeybdDevice(uintptr_t keybd_device);
+		void RefreshKeybdDevice();
 		uintptr_t GetKeybdDevice();
 
 		void SetTargetHP(unsigned long hp);
@@ -96,6 +98,9 @@ namespace bns {
 		void SetSendPacketStructs(uintptr_t rcx, uintptr_t rdx);
 
 		bool SkipCutscene(bool);
+
+		double GetCooldownStartTime();
+		void SetCooldownStartTime();
 
 		// Bns executeable functions
 		sigs::Move Move;

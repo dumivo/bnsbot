@@ -13,8 +13,9 @@ namespace bot {
 	static State bot_state = Off;
 
 	static bool state_change_done;
-	static double cooldown_start_time;
 	static HMODULE dll;
+
+
 
 	/// <summary> Changes the state of the bot in a thread-safe manner.</summary>
 	/// <param name="state"> The new state. </param>

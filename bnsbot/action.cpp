@@ -18,7 +18,7 @@ void bot::X() {
 void bot::Z() {
 	Bns *bns = Bns::getInstance();
 	bns->SendKeyEasyOnce(0x59);
-	bot::cooldown_start_time = clock();
+	bns->SetCooldownStartTime();
 }
 
 void bot::V() {

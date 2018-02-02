@@ -6,7 +6,6 @@ namespace bot {
 		
 	public:
 		Loot();
-		~Loot();
 		bool Execute();
 	};
 }

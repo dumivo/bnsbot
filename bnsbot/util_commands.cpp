@@ -11,14 +11,12 @@ bot::Wait::Wait(unsigned int time_to_wait_ms) {
 	time_to_wait_ms_ = time_to_wait_ms;
 }
 
-bot::Wait::~Wait() {
-}
 
 bool bot::Wait::Execute() {
 	using namespace bns;
 	Bns *bns = Bns::getInstance();
 	bns->SetSleep(true);
-	printf("Sleeping\n");
+	printf("Sleeping for %ums\n", time_to_wait_ms_);
 	Sleep(time_to_wait_ms_);
 	printf("Wake up\n");
 	bns->SetSleep(false);
@@ -28,8 +26,6 @@ bool bot::Wait::Execute() {
 bot::UseF::UseF() {
 }
 
-bot::UseF::~UseF() {
-}
 
 bool bot::UseF::Execute() {
 	Sleep(1000);
@@ -40,8 +36,6 @@ bool bot::UseF::Execute() {
 bot::WaitLoadingScreen::WaitLoadingScreen() {
 }
 
-bot::WaitLoadingScreen::~WaitLoadingScreen() {
-}
 
 bool bot::WaitLoadingScreen::Execute() {
 	using namespace bns;
@@ -70,8 +64,6 @@ bool bot::WaitLoadingScreen::Execute() {
 bot::UsePortalF::UsePortalF() {
 }
 
-bot::UsePortalF::~UsePortalF() {
-}
 
 bool bot::UsePortalF::Execute() {
 	Sleep(1000);
@@ -83,8 +75,6 @@ bool bot::UsePortalF::Execute() {
 bot::UseEsc::UseEsc() {
 }
 
-bot::UseEsc::~UseEsc() {
-}
 
 bool bot::UseEsc::Execute() {
 	Esc();
@@ -99,8 +89,6 @@ bot::SkipCutscene::SkipCutscene() {
 	is_robot_ = true;
 }
 
-bot::SkipCutscene::~SkipCutscene() {
-}
 
 bool bot::SkipCutscene::Execute() {
 	using namespace bns;
@@ -114,9 +102,25 @@ bool bot::SkipCutscene::Execute() {
 	printf("[EXIT_CUTSCENE] hm.. let's escape this bullshit\n");
 	if (!is_robot_) {
 		data[0x18] = 0x84;
-		data[0x3A] = 0x39;
+		data[0x2A] = 0x39;
 	}
 	bns->ExitLoadingScreen((uintptr_t)data);
 	Sleep(1000);
+	return false;
+}
+
+bool bot::MouseSpam::Execute() {
+	printf("Doing some mouse thing bullshit\n");
+	using namespace bns;
+	Bns *bns = Bns::getInstance();
+	HWND foreground_window = GetForegroundWindow();
+	RECT rect;
+	GetWindowRect(foreground_window, &rect);
+	SetCursorPos(rect.left + 0, rect.top + 0);
+	Sleep(500);
+	SetCursorPos(rect.left + 100, rect.top + 100);
+	Sleep(500);
+	SetCursorPos(rect.left + 200, rect.top + 200);
+	Sleep(500);
 	return false;
 }

@@ -5,6 +5,5 @@ namespace bot {
 	class Script {
 	public:
 		Script();
-		~Script();
 	};
 }

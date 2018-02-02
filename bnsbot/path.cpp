@@ -55,6 +55,9 @@ bool Path::Execute() {
 	}
 	bns::Bns *bns_instance = bns::Bns::getInstance();
 
+	// Refresh keybd_device on every start of path. You might wanna remove this, future me.
+	bns_instance->RefreshKeybdDevice();
+
 	size_t i = 0;
 	int stuck_counter = 0;
 	bool retry;
