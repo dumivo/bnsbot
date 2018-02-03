@@ -22,6 +22,9 @@ Bns *Bns::getInstance() {
 }
 
 Bns::Bns() {
+	keybd_device_ = 0;
+	player_ = 0;
+
 	base_client_ = (uintptr_t)GetModuleHandle(NULL);
 	base_shipping_ = (uintptr_t)LoadLibrary(L"bsengine_shipping64.dll");
 	base_player_ = GetBasePlayer();
@@ -173,11 +176,16 @@ uintptr_t Bns::GetBasePlayer() {
 
 }
 
-uintptr_t Bns::GetPlayerAddress() {
+void Bns::RefreshPlayerAddress() {
 	// + 80 = coords
 	// + 23c0 = current moving destination
 	const std::vector<uintptr_t> offsets = { 0x0, 0x584, 0x0, 0x68, 0x29C, 0x0 };
-	return GetAddressByPointer(base_player_, offsets);
+	player_ = GetAddressByPointer(base_player_, offsets);
+	printf("Update player to %p\n", (void *)player_);
+}
+
+uintptr_t Bns::GetPlayerAddress() {
+	return player_;
 }
 
 coord::Coord Bns::GetPlayerCoord() {
@@ -252,7 +260,7 @@ bool bns::Bns::PlayerIsBusy() {
 	if (!player) {
 		return false;
 	}
-	return *(bool *)(player + 0x23C0 + 0x8);
+	return *(bool *)(player + 0x23C0 + 0x8) && *(uintptr_t *)(player + 0x23C0) && *(char *)(player + 0x23C0 + 0x8 + 0x4);
 }
 
 void bns::Bns::SetTargetHP(unsigned long hp) {
@@ -329,11 +337,12 @@ void bns::Bns::SendKeyEasy(unsigned char id) {
 	unsigned char data[0x20] =
 	{
 		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 	};
+	memcpy(keybd_buffer_, data, 0x20);
 	uintptr_t keybd_device = GetKeybdDevice();
 	if (keybd_device) {
-		SendKey(keybd_device, data);
+		SendKey(keybd_device, keybd_buffer_, false);
 	}
 	
 }
@@ -342,17 +351,18 @@ void bns::Bns::SendKeyUpEasy(unsigned char id) {
 	unsigned char data[0x20] =
 	{
 		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	};
+	memcpy(keybd_buffer_, data, 0x20);
 	uintptr_t keybd_device = GetKeybdDevice();
 	if (keybd_device) {
-		SendKeyUp(keybd_device, data);
+		SendKeyUp(keybd_device, keybd_buffer_);
 	}
 }
 
 void bns::Bns::SendKeyEasyOnce(unsigned char id) {
 	SendKeyEasy(id);
-	Sleep(25);
+	Sleep(50);
 	SendKeyUpEasy(id);
 	Sleep(50);
 }
@@ -373,7 +383,10 @@ void bns::Bns::SendPacketEasy(void * data) {
 bool bns::Bns::SendMoveEasy(const coord::Coord & destination) {
 	uintptr_t bns_interface = EInterfaceGetInstance();
 	if (bns_interface) {
-		return SendMove2(bns_interface, destination.x, destination.y, destination.z);
+		printf("Moving to (%f, %f, %f) %p", destination.x, destination.y, destination.z, (void *)bns_interface);
+		bool mv = SendMove2(bns_interface, destination.x, destination.y, destination.z);
+		printf(" %i\n", (int)mv);
+		return mv;
 	}
 	printf("[SendMoveEasy] Error - interface is NULL\n");
 	return false;

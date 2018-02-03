@@ -124,3 +124,11 @@ bool bot::MouseSpam::Execute() {
 	Sleep(500);
 	return false;
 }
+
+bool bot::MushinInstancePrologue::Execute() {
+	auto *bns = bns::Bns::getInstance();
+	printf("Refreshing addresses\n");
+	bns->RefreshPlayerAddress();
+	bns->RefreshKeybdDevice();
+	return false;
+}

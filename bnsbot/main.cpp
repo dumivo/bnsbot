@@ -62,7 +62,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 	uintptr_t baseo = (uintptr_t)GetModuleHandle(0);
 	uintptr_t packet_rcx = GetAddressByPointer(baseo, std::vector<uintptr_t> {0x01816148, 0x0});
 	uintptr_t packet_rdx = GetAddressByPointer(baseo, std::vector<uintptr_t> {0x018140E0, 0x48, 0x0});
-	printf("packetsend = %p, %p", (void *)packet_rcx, (void *)packet_rdx);
+	printf("packetsend = %p, %p\n", (void *)packet_rcx, (void *)packet_rdx);
 
 	printf("===== ADDRESSES =====\n");
 

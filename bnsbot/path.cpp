@@ -56,7 +56,7 @@ bool Path::Execute() {
 	bns::Bns *bns_instance = bns::Bns::getInstance();
 
 	// Refresh keybd_device on every start of path. You might wanna remove this, future me.
-	bns_instance->RefreshKeybdDevice();
+	//bns_instance->RefreshKeybdDevice();
 
 	size_t i = 0;
 	int stuck_counter = 0;
@@ -88,7 +88,7 @@ bool Path::Execute() {
 
 		retry = false;
 		auto &element = path_[i];
-		printf("Moving to: (%f, %f, %f)\n", element.x, element.y, element.z);
+		
 
 		bool good_move = bns_instance->SendMoveEasy(element);
 		if (!good_move) {
@@ -117,6 +117,8 @@ bool Path::Execute() {
 					printf("Player is stuck? Distance=%f retrying..\n", new_dist);
 					printf("This shouldn't happen and you're probably freezed.\n");
 					printf("player=%p\n", (void *)player);
+					bns_instance->RefreshKeybdDevice();
+					bns_instance->RefreshPlayerAddress();
 					retry = true;
 				}
 				start_time = clock();
@@ -178,7 +180,7 @@ bool Path::Execute() {
 		}
 		else {
 			printf("Retrying move..\n");
-			Sleep(2000);
+			Sleep(3000);
 		}
 
 		Sleep(250);

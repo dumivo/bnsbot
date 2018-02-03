@@ -1,7 +1,7 @@
 #include "Memory.h"
 #include <stdio.h>
 
-//#define MEMORY_SHOW_DEBUG_MESSAGES 0
+#define MEMORY_SHOW_DEBUG_MESSAGES 0
 
 uintptr_t GetAddressByPointer(uintptr_t base, std::vector<uintptr_t> offsets) {
 	base += offsets[0];
@@ -11,11 +11,14 @@ uintptr_t GetAddressByPointer(uintptr_t base, std::vector<uintptr_t> offsets) {
 			return NULL;
 		}
 #if defined MEMORY_SHOW_DEBUG_MESSAGES
-		printf("base = %p, offset = %p\n", base, offsets[i]);
+		printf("base = %p\n", (void *)base);
 #endif
 
 		// Read this address and then check if it's a NULL pointer
 		base = *(uintptr_t *)base;
+#if defined MEMORY_SHOW_DEBUG_MESSAGES
+		printf("*base = %p, offset = %p\n", (void *)base, offsets[i]);
+#endif
 		if (!base) {
 			printf("ERROR: GetAddressByPointer at base=%p, offsets[%i]=%i\n", base, i, offsets[i]);
 			return NULL;
@@ -24,7 +27,7 @@ uintptr_t GetAddressByPointer(uintptr_t base, std::vector<uintptr_t> offsets) {
 		// Add the offset afterwards because NULL+offset != NULL (usual case)
 		base += offsets[i];
 #if defined MEMORY_SHOW_DEBUG_MESSAGES
-		printf("new base = %p\n", base);
+		printf("new base = %p\n", (void *)base);
 #endif
 
 	}

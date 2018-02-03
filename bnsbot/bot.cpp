@@ -36,7 +36,8 @@ bot::State bot::GetState() {
 
 void NaksunHallScript(std::vector<std::shared_ptr<bot::Command>>& script) {
 	using namespace bot;
-
+	// Set up addresses like player and keybd_device
+	script.push_back(std::shared_ptr<Command>(new MushinInstancePrologue()));
 	// Go to mushin hall 2
 	script.push_back(std::shared_ptr<Command>(new LoadingPath(std::vector<coord::Coord> {
 		{ -53739.0f, 6367.32f, -9611.62f },
@@ -46,6 +47,8 @@ void NaksunHallScript(std::vector<std::shared_ptr<bot::Command>>& script) {
 	// Loading screen
 	script.push_back(std::shared_ptr<Command>(new Wait(20000)));
 	// Go to in front of the portal
+	// Set up addresses like player and keybd_device
+	script.push_back(std::shared_ptr<Command>(new MushinInstancePrologue()));
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
 		{ -49862.242188f, 4815.891113f, -8794.495117f },
 	})));
@@ -81,8 +84,6 @@ void NaksunScriptF13(std::vector<std::shared_ptr<bot::Command>>& script) {
 		{ -45817.554688f, 9356.798828f, 26854.378906f },
 		{ -46699.261719f, 8454.794922f, 27416.244141f },
 		{ -47165.992188f, 8316.100586f, 27456.876953f }, // <-- cutscene
-	})));
-	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
 		{ -47242.042969f, 8318.500000f, 27459.689453f },
 		{ -47486.191406f, 8318.247070f, 27459.468750f },
 		{ -47518.476563f, 8949.526367f, 27606.978516f },
@@ -102,8 +103,6 @@ void NaksunScriptF13(std::vector<std::shared_ptr<bot::Command>>& script) {
 		{ -46692.812500f, 8493.436523f, 28904.669922f },
 		{ -46932.953125f, 8362.189453f, 28962.806641f },
 		{ -47109.933594f, 8358.036133f, 28963.238281f },
-	})));
-	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
 		{ -47246.890625f, 8356.598633f, 28963.287109f },
 		{ -47496.128906f, 8366.648438f, 28962.878906f },
 		{ -47522.695313f, 8870.359375f, 29111.226563f },
@@ -142,6 +141,9 @@ void NaksunScript(std::vector<std::shared_ptr<bot::Command>>& script) {
 
 	// Sleep loading screen
 	script.push_back(std::shared_ptr<Command>(new Wait(20000)));
+
+	// Set up addresses like player and keybd_device
+	script.push_back(std::shared_ptr<Command>(new MushinInstancePrologue()));
 
 	NaksunScriptF13(script);
 }
@@ -260,6 +262,8 @@ void NaksunF9Script(std::vector<std::shared_ptr<bot::Command>>& script) {
 	}, true)));
 	// Sleep loading screen
 	script.push_back(std::shared_ptr<Command>(new Wait(20000)));
+	// Set up keybd_device
+	script.push_back(std::shared_ptr<Command>(new MushinInstancePrologue()));
 	// F9 move to boss
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
 		{ -47521.136719f, 9795.482422f, 20080.558594f },
@@ -438,9 +442,8 @@ void bot::BotMain(LPVOID param) {
 	while (bot::GetState() != bot::Off) {
 
 		if (GetAsyncKeyState(VK_NUMPAD0)) {
-			printf("boom\n");
-				Tab();
-				Sleep(500);
+			auto attack = new Combat();
+			attack->Execute();
 		}
 		if (GetAsyncKeyState(VK_NUMPAD1)) {
 			printf("boom\n");

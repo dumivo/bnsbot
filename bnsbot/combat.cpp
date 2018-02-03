@@ -40,7 +40,7 @@ bool bot::Combat::Execute() {
 		return false;
 	}
 	else {
-		printf("[COMBAT] HP address is %p", (void *)hp_adr);
+		printf("[COMBAT] HP address is %p\n", (void *)hp_adr);
 	}
 	bns_instance->RefreshKeybdDevice();
 	unsigned long hp = *(unsigned long *)hp_adr;
@@ -69,17 +69,17 @@ bool bot::Combat::Execute() {
 
 	start_time = clock();
 	
-	bns_instance->SetTargetDead(false);
 	// Spam the shit out of the monster until it's dead.
-	while (*(unsigned long *)hp_adr > 1 && GetState() != Suspended) {
+	while (*(long *)hp_adr > 1 && GetState() != Suspended) {
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
 		// Don't spam too much fucker or else the client will completely shut down man..
-		if (milliseconds_passed >= 100) {
+		if (milliseconds_passed >= 50) {
 			F();
 			milliseconds_passed = 0;
+			start_time = clock();
 		}
-		hp = *(unsigned long *)hp_adr;
 	}
+
 
 #if defined (COMBAT_SHOW_DEBUG_MESSAGES)
 	printf("[COMBAT] Spamming F done.\n");
@@ -105,10 +105,9 @@ bool bot::CombatSpin::Execute() {
 	// Spam spin because asshat Naksun has to speak at 1hp.
 	clock_t start_time = clock();
 	double milliseconds_passed;
-	while (*(unsigned int *)hp_adr >= 1) {
+	while (*(long *)hp_adr >= 1) {
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
 		if (milliseconds_passed >= 200) {
-			printf("[COMBAT] Tabbing\n");
 			Tab();
 			milliseconds_passed = 0;
 		}
@@ -134,13 +133,14 @@ bool bot::CombatSnek::Execute() {
 		clock_t skill_clock = clock();
 		while ((clock() - skill_clock) / CLOCKS_PER_SEC < 4) {
 			Tab();
-			Sleep(200);
+			Sleep(100);
 		}
 		skill_clock = clock();
-		while ((clock() - skill_clock) / CLOCKS_PER_SEC < 2) {
+		while ((clock() - skill_clock) / CLOCKS_PER_SEC < 3) {
 			LMB();
-			Sleep(200);
+			Sleep(100);
 		}
+		V();
 		seconds_passed = (clock() - start_time) / CLOCKS_PER_SEC;
 	}
 	printf("Boring phase ended. Waiting for the boss to spawn\n");

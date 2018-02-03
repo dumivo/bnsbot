@@ -51,4 +51,10 @@ namespace bot {
 	public:
 		bool Execute();
 	};
+
+	// Command for pressing F
+	class MushinInstancePrologue : public Command {
+	public:
+		bool Execute();
+	};
 }

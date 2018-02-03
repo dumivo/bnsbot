@@ -107,11 +107,11 @@ bool hook::SetupHooks() {
 		Detour_SendPacket->GetOriginal<bns::sigs::SendPacket>();*/
 
 	// Move
-	Detour_Move->SetupHook((BYTE *)bns_instance->Move,
+	/*Detour_Move->SetupHook((BYTE *)bns_instance->Move,
 		(BYTE *)hook::Move);
 	Detour_Move->Hook();
 	hook::oMove =
-		Detour_Move->GetOriginal<bns::sigs::Move>();
+		Detour_Move->GetOriginal<bns::sigs::Move>();*/
 
 	// Exc
 	//Detour_Exc->SetupHook((BYTE *)bns_instance->Exc,
@@ -126,6 +126,6 @@ void hook::RemoveHooks() {
 	//Detour_UpdateKeybdDevice->UnHook();
 	//Detour_UpdateTargetHP->UnHook();
 	//Detour_SendPacket->UnHook();
-	Detour_Move->UnHook();
+	//Detour_Move->UnHook();
 	//Detour_Exc->UnHook();
 }

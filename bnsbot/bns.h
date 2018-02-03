@@ -20,7 +20,7 @@ namespace bns {
 		typedef bool (__fastcall *SendMove2)(uintptr_t bns_interface, float x, float y, float z);
 		typedef uintptr_t(__fastcall *EInterfaceGetInstance)();
 		typedef void *(__fastcall *ExitLoadingScreen)(uintptr_t rcx);
-		typedef void *(__fastcall *SendKey)(uintptr_t rcx, unsigned char *data);
+		typedef void *(__fastcall *SendKey)(uintptr_t rcx, unsigned char *data, bool once);
 		typedef void *(__fastcall *SendKeyUp)(uintptr_t rcx, unsigned char *data);
 	}
 
@@ -31,7 +31,8 @@ namespace bns {
 		// Base addresses derived from base addresses of modules.
 		uintptr_t base_player_, base_target_hp_, base_keybd_device_;
 		// Base structures, devices, things you have to pass as arguments..
-		uintptr_t keybd_device_, cutscene_if_exists_;
+		uintptr_t keybd_device_, cutscene_if_exists_, player_;
+		unsigned char keybd_buffer_[0x20] = {0};
 
 		// Used to track Z cooldown.
 		double cooldown_start_time_;
@@ -57,6 +58,8 @@ namespace bns {
 
 		static Bns *getInstance();
 
+		// Refreshes player object by caching it.
+		void RefreshPlayerAddress();
 		// Returns current Player object.
 		uintptr_t GetPlayerAddress();
 		uintptr_t GetTargetHPAddress();
