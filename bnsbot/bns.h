@@ -32,7 +32,8 @@ namespace bns {
 		uintptr_t base_player_, base_target_hp_, base_keybd_device_;
 		// Base structures, devices, things you have to pass as arguments..
 		uintptr_t keybd_device_, cutscene_if_exists_, player_;
-		unsigned char keybd_buffer_[0x20] = {0};
+		//unsigned char keybd_buffer_[0x20] = {0};
+
 
 		// Used to track Z cooldown.
 		double cooldown_start_time_;

@@ -103,7 +103,7 @@ bool Path::Execute() {
 
 		// Block until player reached destination.
 		// Retry if player is stuck.
-		clock_t start_time = clock();
+		/*clock_t start_time = clock();
 		double seconds_passed;
 		while (bns_instance->PlayerIsBusy() && !retry) {
 			Sleep(250);
@@ -130,14 +130,28 @@ bool Path::Execute() {
 			printf("Sleeping\n");
 			Sleep(50000);
 			dirty_ = 0;
+		}*/
+
+		// Just sleep some time and check if we reached our destination...
+		// Sleep the amounf of time you'd expect to reach the destination by doing some maths..
+		const float velocity = 248;
+		if (i == 0) {
+			last_pos_ = bns_instance->GetPlayerCoord();
 		}
+		else {
+			last_pos_ = path_[i - 1];
+		}
+		float distance = coord::GetDistance(last_pos_, element);
+		int time_to_sleep = (distance / velocity) + 1;
+		printf("Destination in %is\n", time_to_sleep);
+		Sleep(time_to_sleep * 1000);
 
 		// Check if we're actually at our destination
 		// Loading screens somehow trigger the arrived dst flag..
 		// We assume that you give us paths without obstacles so this here
 		// below should only be for loading screens
 		start_coords = bns_instance->GetPlayerCoord();
-		float distance = coord::GetDistance(start_coords, element);
+		distance = coord::GetDistance(start_coords, element);
 		if (distance >= 200) {
 			printf("[PATH] Player has reached destination, but not physically..\nDistance"
 				"is %f\n", distance);

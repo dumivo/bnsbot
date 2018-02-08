@@ -25,7 +25,7 @@ oSend Send;
 DWORD WINAPI MainThread(LPVOID param) {
 
 	AllocConsole();
-	SetConsoleTitleA("bnsbot (nice name btw)");
+	SetConsoleTitleA("bnsbot (aka. McCrash)");
 	AttachConsole(GetCurrentProcessId());
 
 	FILE *pFile = nullptr;
@@ -60,14 +60,14 @@ DWORD WINAPI MainThread(LPVOID param) {
 	printf("target = %p\n", bns->GetTargetHPAddress());
 	printf("keybd_device = %p\n", bns->GetKeybdDevice());
 	uintptr_t baseo = (uintptr_t)GetModuleHandle(0);
-	uintptr_t packet_rcx = GetAddressByPointer(baseo, std::vector<uintptr_t> {0x01816148, 0x0});
-	uintptr_t packet_rdx = GetAddressByPointer(baseo, std::vector<uintptr_t> {0x018140E0, 0x48, 0x0});
+	uintptr_t packet_rcx = GetAddressByPointer(baseo, std::vector<uintptr_t> {0x01817198, 0x0});
+	uintptr_t packet_rdx = GetAddressByPointer(baseo, std::vector<uintptr_t> {0x01815130, 0x48, 0x0});
 	printf("packetsend = %p, %p\n", (void *)packet_rcx, (void *)packet_rdx);
 
 	printf("===== ADDRESSES =====\n");
 
 	bot::dll = (HMODULE) param;
-	bot::BotMain(NULL);
+	bot::BotMain(param);
 
 	//Detour_Ex->UnHook();
 	FreeConsole();

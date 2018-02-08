@@ -436,26 +436,28 @@ void bot::BotMain(LPVOID param) {
 
 	uintptr_t last_player = 0;
 	uintptr_t current_player = 0;
-	const int f9_every_f13 = 8;
+	const int f9_every_f13 = 4;
 	const bool mouse_spam = false;
 	int f13_counter = 0;
 	while (bot::GetState() != bot::Off) {
 
 		if (GetAsyncKeyState(VK_NUMPAD0)) {
-			auto attack = new Combat();
-			attack->Execute();
+			auto nak = new BuyEntranceTicketF9();
+			nak->Execute();
+			Sleep(500);
+			delete nak;
 		}
 		if (GetAsyncKeyState(VK_NUMPAD1)) {
-			printf("boom\n");
-			bns_instance->RefreshKeybdDevice();
+			auto nak = new BuyEntranceTicketF9();
+			nak->Execute();
 			Sleep(500);
+			delete nak;
 		}
 
 		while (bot::GetState() == bot::Running) {
 			clock_t timer = clock();
 			size_t i = 0;
 			std::vector<std::shared_ptr<bot::Command>> script;
-
 			// Mouse spam?
 			if (mouse_spam) {
 				printf("Using mouse spam\n");

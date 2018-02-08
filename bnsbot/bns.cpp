@@ -33,7 +33,6 @@ Bns::Bns() {
 
 	cooldown_start_time_ = 0;
 
-	SendPacket = (sigs::SendPacket)(base_client_ + 0xFB9D60);
 	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
 	SendAction = (sigs::SendAction)(base_client_ + 0x5313D0); // Mouse and F
 	SendKeyboard = (sigs::SendKeyboard)(base_client_ + 0x5322C0);
@@ -56,6 +55,9 @@ Bns::Bns() {
 	SendEscape = (sigs::SendEscape) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x41\x54\x48\x83\xEC\x20\x4C\x8B\xE1\x48\x8B\x0D\x90\x03\x2E\x01\x48\x85\xC9\x74\x16\x00\x00\x00\x00\x00\x00\x00\x48\x85\xC9",
 		"xxxxxxxxxxxx????xxxxx???????xxx");
+	SendPacket = (sigs::SendPacket) Pattern(base_client_, 0xB000000,
+		(BYTE *)"\x48\x89\x5C\x24\x08\x48\x89\x6C\x24\x10\x48\x89\x74\x24\x18\x57\x48\x83\xEC\x20\x48\x8B\x02\x48\x8B\xD9\x48\x8B\xCA\x49\x8B\xF0\x48\x8B\xFA\xFF\x50\x08\x4C\x63\xC8\x4A\x83\x7C\xCB\x08\x00",
+		"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	SendMove2 = (sigs::SendMove2) Pattern(base_shipping_, 0xB000000,
 		(BYTE *)"\x40\x53\x48\x83\xEC\x60\x48\x8B\x05\xCB\x44\x13\x03\x0F\x29\x74\x24\x50\x0F\x29\x7C\x24\x40\x48\x85\xC0\x44\x0F\x29\x44\x24\x30\x44\x0F\x29\x4C\x24\x20\x0F\x28\xFB\x44\x0F\x28\xC2\x44\x0F\x28\xC9",
 		"xxxxxxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
@@ -339,10 +341,10 @@ void bns::Bns::SendKeyEasy(unsigned char id) {
 		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 	};
-	memcpy(keybd_buffer_, data, 0x20);
+	//memcpy(keybd_buffer_, data, 0x20);
 	uintptr_t keybd_device = GetKeybdDevice();
 	if (keybd_device) {
-		SendKey(keybd_device, keybd_buffer_, false);
+		SendKey(keybd_device, data, false);
 	}
 	
 }
@@ -353,23 +355,29 @@ void bns::Bns::SendKeyUpEasy(unsigned char id) {
 		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	};
-	memcpy(keybd_buffer_, data, 0x20);
+	//memcpy(keybd_buffer_, data, 0x20);
 	uintptr_t keybd_device = GetKeybdDevice();
 	if (keybd_device) {
-		SendKeyUp(keybd_device, keybd_buffer_);
+		SendKeyUp(keybd_device, data);
 	}
 }
 
 void bns::Bns::SendKeyEasyOnce(unsigned char id) {
-	SendKeyEasy(id);
-	Sleep(50);
-	SendKeyUpEasy(id);
-	Sleep(50);
+	unsigned char data[0x20] =
+	{
+		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+	};
+	//memcpy(keybd_buffer_, data, 0x20);
+	uintptr_t keybd_device = GetKeybdDevice();
+	if (keybd_device) {
+		SendKey(keybd_device, data, true);
+	}
 }
 
 void bns::Bns::SendPacketEasy(void * data) {
-	uintptr_t packet_rcx = GetAddressByPointer(base_client_, std::vector<uintptr_t> {0x01816148, 0x0});
-	uintptr_t packet_rdx = GetAddressByPointer(base_client_, std::vector<uintptr_t> {0x018140E0, 0x48, 0x0});
+	uintptr_t packet_rcx = GetAddressByPointer(base_client_, std::vector<uintptr_t> {0x01817198, 0x0});
+	uintptr_t packet_rdx = GetAddressByPointer(base_client_, std::vector<uintptr_t> {0x01815130, 0x48, 0x0});
 	if (packet_rcx && packet_rdx) {
 		printf("Sending packet with: %p %p\n", (void *)packet_rcx, (void *)packet_rdx);
 		SendPacket(packet_rcx, packet_rdx, data);
