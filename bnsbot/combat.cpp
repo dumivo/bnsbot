@@ -43,14 +43,18 @@ bool bot::Combat::Execute() {
 		printf("[COMBAT] HP address is %p\n", (void *)hp_adr);
 	}
 	bns_instance->RefreshKeybdDevice();
-	unsigned long hp = *(int *)hp_adr;
+	int hp = *(int *)hp_adr;
+	printf("Booting\n");
 	One();
 	// Wait until enemy lost hp, but with a max. timeout
 	clock_t start_time = clock();
 	milliseconds_passed = 0;
-	while (*(int *)hp_adr >= hp && milliseconds_passed < 1000) {//
+	while (*(int *)hp_adr >= hp && milliseconds_passed < 500) {//
+		printf(".");
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
+		Sleep(30);
 	}
+	printf("\nAnklebiter\n");
 	Three();
 	Sleep(400);
 	for (int i = 0; i < 3; i++) {
@@ -73,7 +77,7 @@ bool bot::Combat::Execute() {
 	while (*(int *)hp_adr > 1 && GetState() != Suspended && milliseconds_passed <= 10000) {
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
 		// Don't spam too much fucker or else the client will completely shut down man..
-		if (milliseconds_passed >= 200) {
+		if (milliseconds_passed >= 150) {
 			F();
 			milliseconds_passed = 0;
 			start_time = clock();
@@ -127,21 +131,20 @@ bot::CombatSnek::CombatSnek() {
 
 bool bot::CombatSnek::Execute() {
 	printf("[COMBAT] Alright we are at snek let's hope nothing goes wrong\n");
-	Sleep(55000);
+	Sleep(54000);
 	clock_t start_time = clock();
 	double seconds_passed = 0;
 	bns::Bns *bns_instance = bns::Bns::getInstance();
-	bns_instance->RefreshKeybdDevice();
 	while (seconds_passed < 175) {
 		clock_t skill_clock = clock();
 		while ((clock() - skill_clock) / CLOCKS_PER_SEC < 4) {
-			bns_instance->SendKeyEasyOnce(bnskey::Tab);
-			Sleep(200);
+			Tab();
+			Sleep(500);
 		}
 		skill_clock = clock();
 		while ((clock() - skill_clock) / CLOCKS_PER_SEC < 1) {
-			bns_instance->SendKeyEasyOnce(bnskey::LMB);
-			Sleep(100);
+			LMB();
+			Sleep(200);
 		}
 		/*bns_instance->SendKeyEasy(bnskey::Tab);
 		Sleep(4000);

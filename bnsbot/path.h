@@ -9,7 +9,6 @@ namespace bot {
 		// 0 = nothing, 1 = skip robot cutscene at the end of path 2 = skip naksun
 		int dirty_ = 0;
 		coord::Coord last_pos_;
-		void SkipCutscene(bool is_robot);
 	public:
 		Path();
 		Path(std::vector<coord::Coord>);

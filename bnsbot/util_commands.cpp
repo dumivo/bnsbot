@@ -67,45 +67,14 @@ bot::UsePortalF::UsePortalF() {
 
 bool bot::UsePortalF::Execute() {
 	Sleep(1000);
+	auto *bns = bns::Bns::getInstance();
+	printf("[UsePortalF] Waiting for Z cd..\n");
+	/*while ((clock() - bns->GetCooldownStartTime()) / CLOCKS_PER_SEC < 45) {
+
+	}*/
+	printf("[UsePortalF] Z up\n");
 	PortalF();
 	Sleep(500);
-	return false;
-}
-
-bot::UseEsc::UseEsc() {
-}
-
-
-bool bot::UseEsc::Execute() {
-	Esc();
-	return false;
-}
-
-bot::SkipCutscene::SkipCutscene(bool is_robot) {
-	is_robot_ = is_robot;
-}
-
-bot::SkipCutscene::SkipCutscene() {
-	is_robot_ = true;
-}
-
-
-bool bot::SkipCutscene::Execute() {
-	using namespace bns;
-	char data[] = {
-		0xB0, 0x98, 0x39, 0x41, 0x01, 0x00, 0x00, 0x00, 0x10, 0xE0, 0x5C, 0x0A, 0x01, 0x00, 0x00, 0x00,
-		0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x83, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 83 robot
-		0x49, 0x00, 0x5F, 0x00, 0x53, 0x00, 0x57, 0x00, 0x30, 0x00, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00 // 38 robot
-	};
-	Bns *bns = Bns::getInstance();
-	Sleep(1000);
-	printf("[EXIT_CUTSCENE] hm.. let's escape this bullshit\n");
-	if (!is_robot_) {
-		data[0x18] = 0x84;
-		data[0x2A] = 0x39;
-	}
-	bns->ExitLoadingScreen((uintptr_t)data);
-	Sleep(1000);
 	return false;
 }
 

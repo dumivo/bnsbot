@@ -105,7 +105,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>Capstone\msvc\x64\Release\capstone.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Capstone/msvc/x64/Debug/capstone.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
@@ -200,6 +200,16 @@
     <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_classes.h" />
     <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_f_structs.h" />
     <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_structs.h" />
+    <ClInclude Include="Capstone\include\arm.h" />
+    <ClInclude Include="Capstone\include\arm64.h" />
+    <ClInclude Include="Capstone\include\capstone.h" />
+    <ClInclude Include="Capstone\include\mips.h" />
+    <ClInclude Include="Capstone\include\platform.h" />
+    <ClInclude Include="Capstone\include\ppc.h" />
+    <ClInclude Include="Capstone\include\sparc.h" />
+    <ClInclude Include="Capstone\include\systemz.h" />
+    <ClInclude Include="Capstone\include\x86.h" />
+    <ClInclude Include="Capstone\include\xcore.h" />
     <ClInclude Include="combat.h" />
     <ClInclude Include="command.h" />
     <ClInclude Include="controller.h" />
@@ -213,6 +223,10 @@
     <ClInclude Include="Script.h" />
     <ClInclude Include="sensors.h" />
     <ClInclude Include="util_commands.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Capstone\msvc\x64\Debug\capstone.lib" />
+    <Library Include="Capstone\msvc\x64\Release\capstone.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

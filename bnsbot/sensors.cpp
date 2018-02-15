@@ -10,26 +10,6 @@ static std::shared_ptr<PLH::Detour> Detour_Exc(new PLH::Detour);
 
 static bns::Bns *bns_instance;
 
-void hook::UpdateTargetHP(uintptr_t rcx, unsigned long hp, uintptr_t r8) {
-	// TODO: Notify when hp reaches specific thresholds.
-	bns_instance->SetTargetHP(hp);
-	if (hp <= 1) {
-		bns_instance->SetTargetDead(true);
-	}
-	return hook::oUpdateTargetHP(rcx, hp, r8);
-}
-
-static uintptr_t old_keybddevice = 0;
-void * hook::UpdateKeybdDevice(uintptr_t rcx, uintptr_t rdx) {
-	// TODO: save rcx or continously update rcx..
-	//printf("[UpdateKeybdDevice] keybd_device = %p\n", rcx);
-	/*if (!bns_instance->IsSleeping() && rcx != old_keybddevice) {
-		//bns_instance->SetKeybdDevice(rcx);
-		//old_keybddevice = rcx;
-	}*/
-	
-	return hook::oUpdateKeybdDevice(rcx, rdx);
-}
 
 void * hook::InventoryEvent(uintptr_t intenvory_slot, unsigned long slot_id, int r8) {
 	// TODO: Log and identify looted items..
@@ -63,24 +43,13 @@ void * hook::SendPacket(uintptr_t rcx, uintptr_t rdx, void * data) {
 	return hook::oSendPacket(rcx, rdx, data);
 }
 
-bool * hook::Move(uintptr_t player, float x, float y, float z) {
+bool hook::Move(uintptr_t player, float x, float y, float z) {
 	//bool *rtn = oMove(player, x, y, z);
 	printf("{ %ff, %ff, %ff },\n", x, y, z);
-	return oMove(player, x, y, z);
+	return true;
+	//return oMove(player, x, y, z);
 }
-const char fake_exc_data[] =
-{
-	0x10, 0xD2, 0x1D, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x60, 0xF5, 0x95, 0xFC, 0x00, 0x00, 0x00, 0x00
-};
-bool hook::Exc(uintptr_t rcx) {
-	//*(uintptr_t *)(rcx + 0x70) = (uintptr_t)fake_exc_data;
-	//printf("Exc: [%p]\n", rcx);
-	if (!(rcx + 0x70)) {
-		printf("Exc is ZERO AAAAAAAAAAAAAAAH\n");
-		return true;
-	}
-	return oExc(rcx);
-}
+
 
 bool hook::SetupHooks() {
 	bns_instance = bns::Bns::getInstance();

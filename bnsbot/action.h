@@ -4,7 +4,6 @@ namespace bot {
 	void Z();
 	void V();
 	void F();
-	void Q();
 	void UIF();
 	void One();
 	void Three();
@@ -13,7 +12,6 @@ namespace bot {
 	void Nothing();
 	void LMB();
 	void Tab();
-	void Esc();
 }
 
 namespace bnskey {

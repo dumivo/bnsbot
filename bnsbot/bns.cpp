@@ -33,37 +33,12 @@ Bns::Bns() {
 
 	cooldown_start_time_ = 0;
 
-	Move = (sigs::Move)(base_shipping_ + 0x1DEE7E0);
-	SendAction = (sigs::SendAction)(base_client_ + 0x5313D0); // Mouse and F
-	SendKeyboard = (sigs::SendKeyboard)(base_client_ + 0x5322C0);
-	ObjectCoord = (sigs::ObjectCoord)(base_shipping_ + 0xA242E0); // Obsolete
-
-	Exc = (sigs::Exc)(base_shipping_ + 0x828B10);
-
-	UpdateTargetHP = (sigs::UpdateTargetHP) Pattern(base_client_, 0xB000000,
-		(BYTE *)"\x48\x89\x5C\x24\x18\x48\x89\x7C\x24\x20\x41\x54\x41\x55\x41\x56\x48\x83\xEC\x20\x48\x8D\x79\x18\x48\x89\x51\x38",
-		"xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-	UpdateKeybdDevice = (sigs::UpdateKeybdDevice) Pattern(base_client_, 0xB000000,
-		(BYTE *)"\x40\x53\x57\x41\x54\x41\x55\x48\x00\x00\x00\x00\x00\x00\x48\x8B\xD9\x00\x00\x00\x00\x00\x00\x00\x00\x33\xD2",
-		"xxxxxxxx??????xxx????????xx");
-	InventoryEvent = (sigs::InventoryEvent) Pattern(base_client_, 0xB000000,
-		(BYTE *)"\x48\x89\x5C\x24\x08\x48\x89\x74\x24\x10\x57\x48\x83\xEC\x20\x48\x8B\x05\xFA\x34\x3B\x01\x41\x0F\xB6\xF8\x48\x8B\xF2",
-		"xxxxxxxxxxxxxxxxxx????xxxxxxx");
-	SendTab = (sigs::SendTab) Pattern(base_client_, 0xB000000,
-		(BYTE *)"\x40\x53\x48\x83\xEC\x30\x48\x8B\xD9\x48\x8B\x0D\xE0\x08\x2E\x01\x48\x85\xC9\x0F\x84\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x48\x85\xD2\x0F\x84\x00\x00\x00\x00\x4C\x89\x64\x24\x28\x00\x00\x00\x00\x00\x00\x00\x4D\x85\xE4\x75\x0D",
-		"xxxxxxxxxxxx????xxxxx???????????xxxxx????xxxxx???????xxxxx");
-	SendEscape = (sigs::SendEscape) Pattern(base_client_, 0xB000000,
-		(BYTE *)"\x41\x54\x48\x83\xEC\x20\x4C\x8B\xE1\x48\x8B\x0D\x90\x03\x2E\x01\x48\x85\xC9\x74\x16\x00\x00\x00\x00\x00\x00\x00\x48\x85\xC9",
-		"xxxxxxxxxxxx????xxxxx???????xxx");
 	SendPacket = (sigs::SendPacket) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x48\x89\x5C\x24\x08\x48\x89\x6C\x24\x10\x48\x89\x74\x24\x18\x57\x48\x83\xEC\x20\x48\x8B\x02\x48\x8B\xD9\x48\x8B\xCA\x49\x8B\xF0\x48\x8B\xFA\xFF\x50\x08\x4C\x63\xC8\x4A\x83\x7C\xCB\x08\x00",
 		"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	SendMove2 = (sigs::SendMove2) Pattern(base_shipping_, 0xB000000,
 		(BYTE *)"\x40\x53\x48\x83\xEC\x60\x48\x8B\x05\xCB\x44\x13\x03\x0F\x29\x74\x24\x50\x0F\x29\x7C\x24\x40\x48\x85\xC0\x44\x0F\x29\x44\x24\x30\x44\x0F\x29\x4C\x24\x20\x0F\x28\xFB\x44\x0F\x28\xC2\x44\x0F\x28\xC9",
 		"xxxxxxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-	ExitLoadingScreen = (sigs::ExitLoadingScreen) Pattern(base_client_, 0xB000000,
-		(BYTE *)"\x40\x53\x48\x83\xEC\x40\x48\x83\x79\x18\x00\x48\x8B\xD9\x0F\x84\x00\x00\x00\x00\x48\x83\xC9\xFF",
-		"xxxxxxxxxxxxxxxx????xxxx");
 	SendKey = (sigs::SendKey) Pattern(base_client_, 0xB000000,
 		(BYTE *)"\x40\x55\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x00\x00\x00\x00\x00\x00\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x45\x0F\xB6\xF0\x48\x8B\xFA\x48\x8B\xD9\x4C\x8B\x79\x08\x4D\x85\xFF",
 		"xxxxxxxxxxxxx??????x????????????????xxxxxxxxxxxxxxxxx");
@@ -78,35 +53,8 @@ Bns::Bns() {
 
 	/*
 
-	\x40\x57\x41\x54\x41\x55\x41\x56\x41\x57\xB8\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x48\x2B\xE0\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x4C\x8B\xEA\x48\x8B\xD9\x48\x8B\x05\x6B\xF4\x9A\x00
-	xxxxxxxxxxx????x????xxxx????????????????????????????????xxxxxxxxxxxxx
-
-	base monsterhp
-	\x48\x8B\x0D\x2C\x07\x1E\x01\x48\x89\x74\x24\x30\x33\xF6\x48\x85\xC9
-	xxx????xxxxxxxxxx
-	SendMove2
-	\x40\x53\x48\x83\xEC\x60\x48\x8B\x05\xCB\x44\x13\x03\x0F\x29\x74\x24\x50\x0F\x29\x7C\x24\x40\x48\x85\xC0\x44\x0F\x29\x44\x24\x30\x44\x0F\x29\x4C\x24\x20\x0F\x28\xFB\x44\x0F\x28\xC2\x44\x0F\x28\xC9
-	xxxxxxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-	ExitLoadingScreen
-	\x40\x53\x48\x83\xEC\x40\x48\x83\x79\x18\x00\x48\x8B\xD9\x0F\x84\x00\x00\x00\x00\x48\x83\xC9\xFF
-	xxxxxxxxxxxxxxxx????xxxx
-
-	{
-	0xB0, 0x98, 0x39, 0x41, 0x01, 0x00, 0x00, 0x00, 0x10, 0xE0, 0x5C, 0x0A, 0x01, 0x00, 0x00, 0x00,
-	0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x49, 0x00, 0x5F, 0x00, 0x53, 0x00, 0x57, 0x00, 0x30, 0x00, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00
-	};
-
-	sendkey
-	\x40\x55\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x00\x00\x00\x00\x00\x00\x48\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x45\x0F\xB6\xF0\x48\x8B\xFA\x48\x8B\xD9\x4C\x8B\x79\x08\x4D\x85\xFF
-	xxxxxxxxxxxxx??????x????????????????xxxxxxxxxxxxxxxxx
-
-	Pattern to jnz instruction of PushCutscene. patch to jmp and you'll skip every cutscene.
-	\x0F\x85\x00\x00\x00\x00\x33\xC0\x48\x83\xC9\xFF\x48\x8D\x7B\x20\x66\xF2\xAF\x48\xF7\xD1\x48\x83\xF9\x01
-	xx????xxxxxxxxxxxxxxxxxxxx
-	0f 85 45 08 00 00
-	e9 46 08 00 00 90
+	\x48\x8B\xC4\x57\x48\x00\x00\x00\x00\x00\x00\x48\x00\x00\x00\x00\x00\x00\x00\x00\x48\x89\x58\x08\x0F\x29\x70\xE8\x0F\x29\x78\xD8\x44\x0F\x29\x40\xC8\x0F\x28\xF3
+	xxxxx??????x????????xxxxxxxxxxxxxxxxxxxx
 
 	*/
 
@@ -182,8 +130,15 @@ void Bns::RefreshPlayerAddress() {
 	// + 80 = coords
 	// + 23c0 = current moving destination
 	const std::vector<uintptr_t> offsets = { 0x0, 0x584, 0x0, 0x68, 0x29C, 0x0 };
-	player_ = GetAddressByPointer(base_player_, offsets);
-	printf("Update player to %p\n", (void *)player_);
+	do {
+		player_ = GetAddressByPointer(base_player_, offsets);
+		printf("Update player to %p\n", (void *)player_);
+		if (!player_) {
+			printf("Error! player is 0. Retrying..\n");
+			Sleep(1000);
+		}
+	} while (!player_);
+	
 }
 
 uintptr_t Bns::GetPlayerAddress() {
@@ -239,22 +194,29 @@ void bns::Bns::RefreshKeybdDevice() {
 	// Split them up because of an add rcx, 0x8
 	const std::vector<uintptr_t> offsets1 = { 0x0, 0x88, 0x0 };
 	const std::vector<uintptr_t> offsets2 = { 0x18, 0x0 };
-	uintptr_t adr1 = GetAddressByPointer(base_keybd_device_, offsets1);
-	if (!adr1) {
-		printf("Error refreshkeybddvice\n");
-		return;
-	}
+	do {
+		uintptr_t adr1 = GetAddressByPointer(base_keybd_device_, offsets1);
+		if (!adr1) {
+			printf("Error refreshkeybddvice\n");
+			return;
+		}
 
-	adr1 = GetAddressByPointer(adr1, offsets2);
-	if (!adr1) {
-		printf("Error refreshkeybddvice\n");
-		return;
-	}
-	adr1 += 0x128E8;
-	adr1 -= 0x18;
-	//adr1 += 0x8DD90;
-	printf("Updates keybd_device to %p\n", (void *)adr1);
-	keybd_device_ = adr1;
+		adr1 = GetAddressByPointer(adr1, offsets2);
+		if (!adr1) {
+			printf("Error refreshkeybddvice\n");
+			return;
+		}
+		adr1 += 0x128E8;
+		adr1 -= 0x18;
+		//adr1 += 0x8DD90;
+		printf("Updates keybd_device to %p\n", (void *)adr1);
+		keybd_device_ = adr1;
+		if (!keybd_device_) {
+			printf("Error keybd_device is 0. Retrying..\n");
+			Sleep(1000);
+		}
+	} while (!keybd_device_);
+
 }
 
 bool bns::Bns::PlayerIsBusy() {
@@ -303,36 +265,6 @@ bool bns::Bns::IsTargetDead() {
 		dead = target_is_dead_;
 	}
 	return dead;
-}
-
-void bns::Bns::SendKeyboardEasy(int a, int b) {
-	uintptr_t keybd_device = GetKeybdDevice();
-	if (keybd_device) {
-		SendKeyboard(keybd_device, a, b);
-	}
-}
-
-void bns::Bns::SendActionEasy(int a, int b) {
-	uintptr_t keybd_device = GetKeybdDevice();
-	if (keybd_device) {
-		uintptr_t res = (uintptr_t)SendAction(keybd_device, a, b);
-		if (!(res & 1)) {
-			//printf("Sendaction returned 0 (%p)\n", (void *)res);
-		}
-	}
-}
-
-void bns::Bns::SendTabEasy() {
-	uintptr_t keybd_device = GetKeybdDevice();
-	if (keybd_device) {
-		SendTab(keybd_device);
-	}
-}
-
-void bns::Bns::SendEscEasy() {
-	if (keybd_device_) {
-		SendEscape(keybd_device_);
-	}
 }
 
 void bns::Bns::SendKeyEasy(unsigned char id) {

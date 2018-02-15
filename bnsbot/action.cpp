@@ -31,11 +31,6 @@ void bot::F() {
 	bns->SendKeyEasyOnce(0x46);
 }
 
-void bot::Q() {
-	Bns *bns = Bns::getInstance();
-	bns->SendKeyboardEasy(1, 5);
-}
-
 void bot::UIF() {
 	Bns *bns = Bns::getInstance();
 	bns->SendKeyEasyOnce(0x46);
@@ -75,9 +70,4 @@ void bot::LMB() {
 void bot::Tab() {
 	Bns *bns = Bns::getInstance();
 	bns->SendKeyEasyOnce(0x09);
-}
-
-void bot::Esc() {
-	Bns *bns = Bns::getInstance();
-	bns->SendEscEasy();
 }

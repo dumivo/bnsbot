@@ -7,19 +7,8 @@
 namespace bns {
 	namespace sigs {
 		typedef void *(__fastcall *SendPacket)(uintptr_t rcx, uintptr_t rdx, void *data);
-		typedef bool *(__fastcall *Move)(uintptr_t player, float x, float y, float z);
-		typedef void *(__fastcall *SendAction)(uintptr_t rcx, int rdx, int r8);
-		typedef void *(__fastcall *SendKeyboard)(uintptr_t rcx, int rdx, int r8);
-		typedef void *(__fastcall *SendTab)(uintptr_t rcx);
-		typedef void *(__fastcall *SendEscape)(uintptr_t rcx);
-		typedef void *(__fastcall *ObjectCoord)(uintptr_t rcx, uintptr_t rdx);
-		typedef void  (__fastcall *UpdateTargetHP)(uintptr_t rcx, unsigned long hp, uintptr_t r8);
-		typedef void *(__fastcall *UpdateKeybdDevice)(uintptr_t rcx, uintptr_t rdx);
-		typedef void *(__fastcall *InventoryEvent)(uintptr_t intenvory_slot, unsigned long slot_id, int r8);
-		typedef bool (__fastcall *Exc)(uintptr_t rcx);
 		typedef bool (__fastcall *SendMove2)(uintptr_t bns_interface, float x, float y, float z);
 		typedef uintptr_t(__fastcall *EInterfaceGetInstance)();
-		typedef void *(__fastcall *ExitLoadingScreen)(uintptr_t rcx);
 		typedef void *(__fastcall *SendKey)(uintptr_t rcx, unsigned char *data, bool once);
 		typedef void *(__fastcall *SendKeyUp)(uintptr_t rcx, unsigned char *data);
 	}
@@ -86,10 +75,7 @@ namespace bns {
 		void SetTargetDead(bool dead);
 		bool IsTargetDead();
 
-		void SendKeyboardEasy(int a, int b);
-		void SendActionEasy(int a, int b);
-		void SendTabEasy();
-		void SendEscEasy();
+
 		// Sends ands holds a specific key.
 		void SendKeyEasy(unsigned char id);
 		// Stop holding a specific key.
@@ -107,20 +93,9 @@ namespace bns {
 		void SetCooldownStartTime();
 
 		// Bns executeable functions
-		sigs::Move Move;
 		sigs::SendPacket SendPacket;
-		sigs::SendAction SendAction;
-		sigs::ObjectCoord ObjectCoord;
-		sigs::SendKeyboard SendKeyboard;
-		sigs::SendTab SendTab;
-		sigs::SendEscape SendEscape;
-		sigs::UpdateTargetHP UpdateTargetHP;
-		sigs::UpdateKeybdDevice UpdateKeybdDevice;
-		sigs::InventoryEvent InventoryEvent;
-		sigs::Exc Exc;
 		sigs::EInterfaceGetInstance EInterfaceGetInstance;
 		sigs::SendMove2 SendMove2;
-		sigs::ExitLoadingScreen ExitLoadingScreen;
 		sigs::SendKey SendKey;
 		sigs::SendKeyUp SendKeyUp;
 	};

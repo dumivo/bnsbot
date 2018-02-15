@@ -1,7 +1,7 @@
 #include "Memory.h"
 #include <stdio.h>
 
-#define MEMORY_SHOW_DEBUG_MESSAGES 0
+//#define MEMORY_SHOW_DEBUG_MESSAGES 0
 
 uintptr_t GetAddressByPointer(uintptr_t base, std::vector<uintptr_t> offsets) {
 	base += offsets[0];

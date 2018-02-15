@@ -24,25 +24,10 @@ namespace bot {
 		bool Execute();
 	};
 
-	class UseEsc : public Command {
-	public:
-		UseEsc();
-		bool Execute();
-	};
-
 	// Waits until loading screen is over.
 	class WaitLoadingScreen : public Command {
 	public:
 		WaitLoadingScreen();
-		bool Execute();
-	};
-
-	// Waits until loading screen is over.
-	class SkipCutscene : public Command {
-		bool is_robot_ = true;
-	public:
-		SkipCutscene(bool is_robot);
-		SkipCutscene();
 		bool Execute();
 	};
 

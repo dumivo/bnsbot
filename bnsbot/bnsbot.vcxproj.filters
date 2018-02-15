@@ -19,6 +19,9 @@
     <Filter Include="Header Files\BnS\SDK_HEADERS">
       <UniqueIdentifier>{4cb782cf-98c7-45ce-99e2-41fe14f0784c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\bot">
+      <UniqueIdentifier>{db0e45ba-4555-4530-b734-85b915857d11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,49 +113,10 @@
     <ClInclude Include="bns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="path.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="coord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="combat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sensors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Script.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loading_path.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="action.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="packets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="buy_ticket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="buy_entrance_ticket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util_commands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SdkHeaders.h">
@@ -230,5 +194,78 @@
     <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_structs.h">
       <Filter>Header Files\BnS\SDK_HEADERS</Filter>
     </ClInclude>
+    <ClInclude Include="action.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="buy_entrance_ticket.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="bot.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="combat.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="command.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="controller.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="loading_path.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="loot.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="path.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="sensors.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="util_commands.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="buy_ticket.h">
+      <Filter>Header Files\bot</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\arm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\arm64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\capstone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\mips.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\ppc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\sparc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\systemz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\x86.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\xcore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Capstone\msvc\x64\Release\capstone.lib" />
+    <Library Include="Capstone\msvc\x64\Debug\capstone.lib" />
   </ItemGroup>
 </Project>

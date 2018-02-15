@@ -46,14 +46,8 @@ DWORD WINAPI MainThread(LPVOID param) {
 
 	printf("===== BNSFUNCTIONS =====\n");
 	printf("SendPacket = %p\n", bns->SendPacket);
-	printf("Move = %p\n", bns->Move);
-	printf("SendAction = %p\n", bns->SendAction);
-	printf("SendKeyboard = %p\n", bns->SendKeyboard);
-	printf("SendTab = %p\n", bns->SendTab);
-	printf("SendEscape = %p\n", bns->SendEscape);
-	printf("UpdateKeybdDevice = %p\n", bns->UpdateKeybdDevice);
-	printf("InventoryEvent = %p\n", bns->InventoryEvent);
-	printf("SendKey = %p", (void *)bns->SendKey);
+	printf("Move = %p\n", bns->SendMove2);
+	printf("SendKey = %p\n", (void *)bns->SendKey);
 	printf("===== BNSFUNCTIONS =====\n");
 	printf("===== ADDRESSES =====\n");
 	printf("player = %p\n", bns->GetPlayerAddress());
@@ -227,16 +221,6 @@ DWORD WINAPI MainThread(LPVOID param) {
 	Detour_Ex->Hook();
 	Move2_orig = Detour_Ex->GetOriginal<oMove2>();*/
 
-	printf("===== BNSFUNCTIONS =====\n");
-	printf("SendPacket = %p\n", bns->SendPacket);
-	printf("Move = %p\n", bns->Move);
-	printf("SendAction = %p\n", bns->SendAction);
-	printf("SendKeyboard = %p\n", bns->SendKeyboard);
-	printf("SendTab = %p\n", bns->SendTab);
-	printf("SendEscape = %p\n", bns->SendEscape);
-	printf("UpdateKeybdDevice = %p\n", bns->UpdateKeybdDevice);
-	printf("InventoryEvent = %p\n", bns->InventoryEvent);
-	printf("===== BNSFUNCTIONS =====\n");
 
 	bot::BotMain(NULL);
 
@@ -286,15 +270,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 			Sleep(250);
 		}
 		else if (GetAsyncKeyState(VK_NUMPAD5)) {
-			bns->SendKeyboard(0x00000000FC5B3FE0, 1, 5);
-			Sleep(500);
-			bns->SendKeyboard(0x00000000FC5B3FE0, 1, 4);
-			Sleep(250);
-			for (int i = 0; i < 400; i++) {
-				bns->SendAction(0x00000000FC5B3FE0, 1, 2);
-				Sleep(20);
-			}
-			Sleep(200);
+
 			
 		}
 		else if (GetAsyncKeyState(VK_NUMPAD6)) {
