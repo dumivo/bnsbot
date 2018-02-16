@@ -294,8 +294,8 @@ void bns::Bns::SendKeyUpEasy(unsigned char id) {
 	}
 }
 
-void bns::Bns::SendKeyEasyOnce(unsigned char id) {
-	unsigned char data[0x20] =
+void bns::Bns::SendKeyEasyOnce(WORD id) {
+	/*unsigned char data[0x20] =
 	{
 		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -304,7 +304,22 @@ void bns::Bns::SendKeyEasyOnce(unsigned char id) {
 	uintptr_t keybd_device = GetKeybdDevice();
 	if (keybd_device) {
 		SendKey(keybd_device, data, true);
-	}
+	}*/
+	INPUT ip[2];
+	ip[0].type = INPUT_KEYBOARD;
+	ip[0].ki.time = 0;
+	ip[0].ki.wVk = 0;
+	ip[0].ki.dwExtraInfo = 0;
+	ip[0].ki.dwFlags = KEYEVENTF_SCANCODE;
+	ip[0].ki.wScan = id;
+
+	ip[1].type = INPUT_KEYBOARD;
+	ip[1].ki.time = 0;
+	ip[1].ki.wVk = 0;
+	ip[1].ki.dwExtraInfo = 0;
+	ip[1].ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP; // set the flag so the key goes up so it doesn't repeat keys
+	ip[1].ki.wScan = id;
+	SendInput(2, ip, sizeof(INPUT));
 }
 
 void bns::Bns::SendPacketEasy(void * data) {

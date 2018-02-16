@@ -81,7 +81,7 @@ namespace bns {
 		// Stop holding a specific key.
 		void SendKeyUpEasy(unsigned char id);
 		// Sends a specific key once.
-		void SendKeyEasyOnce(unsigned char id);
+		void SendKeyEasyOnce(WORD id);
 		void SendPacketEasy(void *data);
 		bool SendMoveEasy(const coord::Coord &destination);
 

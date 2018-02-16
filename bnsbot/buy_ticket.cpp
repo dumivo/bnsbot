@@ -13,7 +13,10 @@ bool bot::BuyTicket::Execute() {
 	bns_instance->SendPacketEasy((void *)packets::buy_orb);
 	// TODO: wait for inventory event of orb.. but meh not now. Not yet.
 	Sleep(1000);
-	UIF();
+	for (int i = 0; i < 3; i++) {
+		UIF();
+		Sleep(300);
+	}
 	Sleep(500);
 	return false;
 }

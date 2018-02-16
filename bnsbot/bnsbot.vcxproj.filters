@@ -13,14 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\BnS">
-      <UniqueIdentifier>{f320f977-a312-4258-90d8-1d10796b2484}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\BnS\SDK_HEADERS">
-      <UniqueIdentifier>{4cb782cf-98c7-45ce-99e2-41fe14f0784c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\bot">
       <UniqueIdentifier>{db0e45ba-4555-4530-b734-85b915857d11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\capstone">
+      <UniqueIdentifier>{fb3c220d-7c0d-4baa-9299-bb7074342a67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,30 +75,6 @@
     <ClCompile Include="packets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\ALAudio_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Core_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Editor_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Engine_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Editor_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Game_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\UnrealEd_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_classes.cpp">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory.h">
@@ -118,81 +91,6 @@
     </ClInclude>
     <ClInclude Include="packets.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SdkHeaders.h">
-      <Filter>Header Files\BnS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\ALAudio_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\ALAudio_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\ALAudio_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Core_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Core_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Core_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Editor_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Editor_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Editor_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Engine_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Engine_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\Engine_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Editor_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Editor_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Editor_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Game_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Game_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\T1Game_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\UnrealEd_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\UnrealEd_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\UnrealEd_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_classes.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_f_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\vminh\Desktop\Minh\misc\[AfroDev] BnS_Work (1)\[AfroDev] BnS_Work\BnS\SDK_HEADERS\WinDrv_structs.h">
-      <Filter>Header Files\BnS\SDK_HEADERS</Filter>
     </ClInclude>
     <ClInclude Include="action.h">
       <Filter>Header Files\bot</Filter>
@@ -233,39 +131,38 @@
     <ClInclude Include="buy_ticket.h">
       <Filter>Header Files\bot</Filter>
     </ClInclude>
-    <ClInclude Include="Capstone\include\arm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Capstone\include\arm64.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Capstone\include\capstone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Capstone\include\mips.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Capstone\include\platform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Capstone\include\ppc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Capstone\include\sparc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Capstone\include\systemz.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Capstone\include\xcore.h">
+      <Filter>Header Files\capstone</Filter>
     </ClInclude>
     <ClInclude Include="Capstone\include\x86.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\systemz.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\sparc.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\ppc.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\platform.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\mips.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\capstone.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\arm64.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="Capstone\include\arm.h">
+      <Filter>Header Files\capstone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\d3d9\Include\dinput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Capstone\include\xcore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="Capstone\msvc\x64\Release\capstone.lib" />
-    <Library Include="Capstone\msvc\x64\Debug\capstone.lib" />
   </ItemGroup>
 </Project>

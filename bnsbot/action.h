@@ -1,4 +1,6 @@
 #pragma once
+
+#include "dinput.h"
 namespace bot {
 	void X();
 	void Z();
@@ -15,13 +17,13 @@ namespace bot {
 }
 
 namespace bnskey {
-	const unsigned char 
-		X = 0x58, 
-		Z = 0x59,
-		V = 0x56,
-		F = 0x46,
-		One = 0x31,
-		Three = 0x33,
-		LMB = 0x52,
-		Tab = 0x09;
+	const WORD 
+		X = DIKEYBOARD_X, 
+		Z = DIKEYBOARD_Z,
+		V = DIKEYBOARD_V,
+		F = DIKEYBOARD_F,
+		One = DIKEYBOARD_1,
+		Three = DIKEYBOARD_3,
+		LMB = DIKEYBOARD_R,
+		Tab = DIKEYBOARD_TAB;
 }
