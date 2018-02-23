@@ -17,13 +17,14 @@ namespace bot {
 }
 
 namespace bnskey {
-	const WORD 
-		X = DIKEYBOARD_X, 
+	const WORD
+		X = DIKEYBOARD_X,
 		Z = DIKEYBOARD_Z,
 		V = DIKEYBOARD_V,
 		F = DIKEYBOARD_F,
 		One = DIKEYBOARD_1,
 		Three = DIKEYBOARD_3,
 		LMB = DIKEYBOARD_R,
-		Tab = DIKEYBOARD_TAB;
+		Tab = DIKEYBOARD_TAB,
+		Q = DIKEYBOARD_Q;
 }

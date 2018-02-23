@@ -77,9 +77,9 @@ namespace bns {
 
 
 		// Sends ands holds a specific key.
-		void SendKeyEasy(unsigned char id);
+		void SendKeyEasy(WORD id);
 		// Stop holding a specific key.
-		void SendKeyUpEasy(unsigned char id);
+		void SendKeyUpEasy(WORD id);
 		// Sends a specific key once.
 		void SendKeyEasyOnce(WORD id);
 		void SendPacketEasy(void *data);

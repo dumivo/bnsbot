@@ -267,31 +267,26 @@ bool bns::Bns::IsTargetDead() {
 	return dead;
 }
 
-void bns::Bns::SendKeyEasy(unsigned char id) {
-	unsigned char data[0x20] =
-	{
-		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-	};
-	//memcpy(keybd_buffer_, data, 0x20);
-	uintptr_t keybd_device = GetKeybdDevice();
-	if (keybd_device) {
-		SendKey(keybd_device, data, false);
-	}
-	
+void bns::Bns::SendKeyEasy(WORD id) {
+	INPUT ip;
+	ip.type = INPUT_KEYBOARD;
+	ip.ki.time = 0;
+	ip.ki.wVk = 0;
+	ip.ki.dwExtraInfo = 0;
+	ip.ki.dwFlags = KEYEVENTF_SCANCODE; // set the flag so the key goes up so it doesn't repeat keys
+	ip.ki.wScan = id;
+	SendInput(1, &ip, sizeof(INPUT));
 }
 
-void bns::Bns::SendKeyUpEasy(unsigned char id) {
-	unsigned char data[0x20] =
-	{
-		id  , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x98, 0x88, 0x89, 0xE6, 0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-	};
-	//memcpy(keybd_buffer_, data, 0x20);
-	uintptr_t keybd_device = GetKeybdDevice();
-	if (keybd_device) {
-		SendKeyUp(keybd_device, data);
-	}
+void bns::Bns::SendKeyUpEasy(WORD id) {
+	INPUT ip;
+	ip.type = INPUT_KEYBOARD;
+	ip.ki.time = 0;
+	ip.ki.wVk = 0;
+	ip.ki.dwExtraInfo = 0;
+	ip.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP; // set the flag so the key goes up so it doesn't repeat keys
+	ip.ki.wScan = id;
+	SendInput(1, &ip, sizeof(INPUT));
 }
 
 void bns::Bns::SendKeyEasyOnce(WORD id) {

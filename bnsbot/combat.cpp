@@ -44,27 +44,23 @@ bool bot::Combat::Execute() {
 	}
 	bns_instance->RefreshKeybdDevice();
 	int hp = *(int *)hp_adr;
-	printf("Booting\n");
-	One();
+	printf("Dazing\n");
+	V();
 	// Wait until enemy lost hp, but with a max. timeout
 	clock_t start_time = clock();
 	milliseconds_passed = 0;
-	while (*(int *)hp_adr >= hp && milliseconds_passed < 500) {//
-		printf(".");
+	while (*(int *)hp_adr >= hp && milliseconds_passed < 1000) {//
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
-		Sleep(30);
+		if (milliseconds_passed >= 1000) {
+			printf("Q\n");
+			bns_instance->SendKeyEasyOnce(bnskey::Q);
+		}
 	}
-	printf("\nAnklebiter\n");
-	Three();
+	Sleep(100);
+	bns_instance->SendKeyEasy(bnskey::X);
 	Sleep(400);
-	for (int i = 0; i < 3; i++) {
-		X();
-		Sleep(150);
-	}
-	for (int i = 0; i < 3; i++) {
-		Z();
-		Sleep(100);
-	}
+	bns_instance->SendKeyEasy(bnskey::Z);
+	Sleep(300);
 	
 
 #if defined (COMBAT_SHOW_DEBUG_MESSAGES)
@@ -73,18 +69,26 @@ bool bot::Combat::Execute() {
 
 	start_time = clock();
 	clock_t start_time_timeout = clock();
+	bns_instance->SendKeyEasy(bnskey::F);
 	// Spam the shit out of the monster until it's dead.
 	while (*(int *)hp_adr > 1 && GetState() != Suspended && milliseconds_passed <= 10000) {
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
 		// Don't spam too much fucker or else the client will completely shut down man..
+		F();
 		if (milliseconds_passed >= 150) {
-			F();
+			X();
+			Z();
+			//F();
 			milliseconds_passed = 0;
 			start_time = clock();
 		}
 		Sleep(50);
 		milliseconds_passed = (clock() - start_time_timeout) / (CLOCKS_PER_SEC / 1000);
 	}
+	bns_instance->SendKeyUpEasy(bnskey::Three);
+	bns_instance->SendKeyUpEasy(bnskey::X);
+	bns_instance->SendKeyUpEasy(bnskey::Z);
+	bns_instance->SendKeyUpEasy(bnskey::F);
 
 
 #if defined (COMBAT_SHOW_DEBUG_MESSAGES)
@@ -111,7 +115,7 @@ bool bot::CombatSpin::Execute() {
 	// Spam spin because asshat Naksun has to speak at 1hp.
 	clock_t start_time = clock();
 	double milliseconds_passed;
-	while (*(int *)hp_adr == 1) {
+	while (*(int *)hp_adr >= 1) {
 		milliseconds_passed = (clock() - start_time) / (CLOCKS_PER_SEC / 1000);
 		if (milliseconds_passed >= 200) {
 			Tab();

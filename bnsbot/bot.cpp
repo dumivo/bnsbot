@@ -77,17 +77,13 @@ void NaksunScriptF13(std::vector<std::shared_ptr<bot::Command>>& script) {
 	script.push_back(std::shared_ptr<Command>(new Loot()));
 	// Go to f14
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47512.183594f, 11227.820313f, 26154.533203f },
-		{ -47512.214844f, 11755.634766f, 26262.564453f },
-		{ -46888.621094f, 11678.717773f, 26260.691406f },
-		{ -45897.671875f, 10819.937500f, 26848.744141f },
-		{ -45817.554688f, 9356.798828f, 26854.378906f },
-		{ -46699.261719f, 8454.794922f, 27416.244141f },
-		{ -47165.992188f, 8316.100586f, 27456.876953f }, // <-- cutscene
-		{ -47242.042969f, 8318.500000f, 27459.689453f },
-		{ -47486.191406f, 8318.247070f, 27459.468750f },
-		{ -47518.476563f, 8949.526367f, 27606.978516f },
-		{ -47527.023438f, 9890.327148f, 27575.427734f },
+		{ -47518.402344f, 11749.320313f, 26263.412109f },
+		{ -46813.722656f, 11750.712891f, 26263.412109f },
+		{ -45744.453125f, 10679.685547f, 26857.095703f },
+		{ -45813.156250f, 9360.359375f, 26857.095703f },
+		{ -46884.437500f, 8316.925781f, 27460.701172f },
+		{ -47529.042969f, 8317.372070f, 27460.701172f },
+		{ -47543.992188f, 9896.345703f, 27574.783203f },
 	})));
 	// Kill
 	script.push_back(std::shared_ptr<Command>(new CombatSpin()));
@@ -95,18 +91,13 @@ void NaksunScriptF13(std::vector<std::shared_ptr<bot::Command>>& script) {
 	script.push_back(std::shared_ptr<Command>(new Loot()));
 	// Go to f15
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47513.117188f, 11300.231445f, 27662.466797f },
-		{ -47207.460938f, 11834.181641f, 27763.935547f },
-		{ -46798.761719f, 11756.212891f, 27763.099609f },
-		{ -45879.492188f, 10841.348633f, 28351.408203f },
-		{ -45820.816406f, 9412.381836f, 28356.251953f },
-		{ -46692.812500f, 8493.436523f, 28904.669922f },
-		{ -46932.953125f, 8362.189453f, 28962.806641f },
-		{ -47109.933594f, 8358.036133f, 28963.238281f },
-		{ -47246.890625f, 8356.598633f, 28963.287109f },
-		{ -47496.128906f, 8366.648438f, 28962.878906f },
-		{ -47522.695313f, 8870.359375f, 29111.226563f },
-		{ -47517.484375f, 9952.857422f, 29079.062500f },
+		{ -47511.640625f, 11761.174805f, 27765.412109f },
+		{ -46817.300781f, 11717.775391f, 27765.412109f },
+		{ -45768.687500f, 10682.803711f, 28359.097656f },
+		{ -45838.808594f, 9361.602539f, 28359.097656f },
+		{ -46949.464844f, 8285.130859f, 28964.701172f },
+		{ -47522.320313f, 8377.159180f, 28964.701172f },
+		{ -47525.453125f, 9987.574219f, 29079.414063f },
 	})));
 	// Kill
 	script.push_back(std::shared_ptr<Command>(new CombatSpin()));
@@ -133,9 +124,12 @@ void NaksunScript(std::vector<std::shared_ptr<bot::Command>>& script) {
 	NaksunHallScript(script);
 
 	// Enter Dungeon using F13 ticket
+	
+	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
+		{ -49634.167969f, 4807.551270f, -8795.016602f },
+	}, true)));
 	script.push_back(std::shared_ptr<Command>(new BuyEntranceTicket()));
 	script.push_back(std::shared_ptr<Command>(new LoadingPath(std::vector<coord::Coord> {
-		{ -49634.167969f, 4807.551270f, -8795.016602f },
 		{ -49454.195313f, 4812.831543f, -8795.212891f }
 	}, true)));
 
@@ -255,9 +249,11 @@ void NaksunF9Script(std::vector<std::shared_ptr<bot::Command>>& script) {
 	NaksunHallScript(script);
 
 	// Enter Dungeon using F9 ticket
+	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
+		{ -49634.167969f, 4807.551270f, -8795.016602f },
+	}, true)));
 	script.push_back(std::shared_ptr<Command>(new BuyEntranceTicketF9()));
 	script.push_back(std::shared_ptr<Command>(new LoadingPath(std::vector<coord::Coord> {
-		{ -49634.167969f, 4807.551270f, -8795.016602f },
 		{ -49454.195313f, 4812.831543f, -8795.212891f }
 	}, true)));
 	// Sleep loading screen
@@ -276,18 +272,13 @@ void NaksunF9Script(std::vector<std::shared_ptr<bot::Command>>& script) {
 	script.push_back(std::shared_ptr<Command>(new Loot()));
 	// F10 move to boss
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47513.566406f, 11210.275391f, 20161.074219f },
-		{ -47497.957031f, 11748.631836f, 20271.167969f },
-		{ -46855.441406f, 11668.635742f, 20269.001953f },
-		{ -45998.742188f, 10845.214844f, 20813.400391f },
-		{ -45813.371094f, 10532.608398f, 20863.482422f },
-		{ -45896.804688f, 9463.457031f, 20862.535156f },
-		{ -45863.078125f, 9392.676758f, 20864.816406f },
-		{ -46766.011719f, 8522.683594f, 21423.605469f },
-		{ -47123.160156f, 8329.910156f, 21456.761719f },
-		{ -47482.160156f, 8330.450195f, 21456.718750f },
-		{ -47529.222656f, 8873.143555f, 21605.037109f },
-		{ -47526.351563f, 9927.242188f, 21574.316406f },
+		{ -47520.843750f, 11711.344727f, 20271.412109f },
+		{ -46836.773438f, 11762.383789f, 20271.412109f },
+		{ -45784.996094f, 10736.904297f, 20865.095703f},
+		{ -45815.214844f, 9411.662109f, 20865.095703f },
+		{ -46893.980469f, 8283.570313f, 21459.611328f },
+		{ -47472.675781f, 8298.936523f, 21459.611328f },
+		{ -47502.828125f, 9928.534180f, 21573.783203f },
 	})));
 	// Kill
 	script.push_back(std::shared_ptr<Command>(new CombatSpin()));
@@ -295,16 +286,13 @@ void NaksunF9Script(std::vector<std::shared_ptr<bot::Command>>& script) {
 	script.push_back(std::shared_ptr<Command>(new Loot()));
 	// F11 move to boss
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47537.582031f, 10907.540039f, 21573.671875f },
-		{ -47510.703125f, 11285.857422f, 21661.423828f },
-		{ -47224.902344f, 11840.181641f, 21763.810547f },
-		{ -46849.828125f, 11726.875977f, 21762.060547f },
-		{ -45925.929688f, 10833.442383f, 22336.109375f },
-		{ -45844.675781f, 9342.852539f, 22355.228516f },
-		{ -46737.882813f, 8494.027344f, 22918.937500f },
-		{ -47552.644531f, 8280.803711f, 22955.587891f },
-		{ -47527.562500f, 8721.146484f, 23080.365234f },
-		{ -47529.300781f, 9892.597656f, 23073.863281f },
+		{ -47522.773438f, 11728.661133f, 21764.412109f },
+		{ -46884.175781f, 11721.245117f, 21764.412109f },
+		{ -45770.429688f, 10637.527344f, 22358.101563f },
+		{ -45831.906250f, 9450.133789f, 22358.101563f },
+		{ -46934.234375f, 8260.546875f, 22959.701172f },
+		{ -47476.792969f, 8376.646484f, 22959.701172f },
+		{ -47529.914063f, 9948.291016f, 23073.783203f },
 	})));
 	// Kill
 	script.push_back(std::shared_ptr<Command>(new CombatSpin()));
@@ -312,19 +300,13 @@ void NaksunF9Script(std::vector<std::shared_ptr<bot::Command>>& script) {
 	script.push_back(std::shared_ptr<Command>(new Loot()));
 	// F12 move to boss
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47522.960938f, 11249.240234f, 23158.744141f },
-		{ -47393.628906f, 11752.474609f, 23263.910156f },
-		{ -46881.632813f, 11725.844727f, 23261.550781f },
-		{ -45961.843750f, 10839.772461f, 23819.630859f },
-		{ -45784.574219f, 10260.658203f, 23856.867188f },
-		{ -45837.445313f, 9332.625000f, 23855.861328f },
-		{ -46692.445313f, 8493.021484f, 24401.796875f },
-		{ -47166.269531f, 8322.925781f, 24455.044922f },
-		{ -47495.023438f, 8331.483398f, 24455.953125f },
-		{ -47535.375000f, 8885.742188f, 24604.500000f },
-		{ -47504.171875f, 9327.171875f, 24570.097656f },
-		{ -47518.265625f, 9686.134766f, 24572.392578f },
-		{ -47519.972656f, 10036.756836f, 24572.859375f },
+		{ -47532.539063f, 11732.333008f, 23264.412109f},
+		{ -46804.648438f, 11735.137695f, 23264.412109f },
+		{ -45758.609375f, 10695.980469f, 23858.103516f },
+		{ -45814.511719f, 9390.843750f, 23858.101563f },
+		{ -46911.765625f, 8279.994141f, 24458.701172f },
+		{ -47519.621094f, 8396.813477f, 24458.701172f },
+		{ -47518.968750f, 10032.772461f, 24572.783203f},
 	})));
 	// KillSnek
 	script.push_back(std::shared_ptr<Command>(new CombatSnek()));
@@ -343,16 +325,13 @@ void NaksunF9Script(std::vector<std::shared_ptr<bot::Command>>& script) {
 	script.push_back(std::shared_ptr<Command>(new Loot()));
 	// F13 move to boss
 	script.push_back(std::shared_ptr<Command>(new Path(std::vector<coord::Coord> {
-		{ -47514.027344f, 11306.560547f, 24661.492188f },
-		{ -47386.363281f, 11751.125977f, 24762.933594f },
-		{ -46736.140625f, 11664.529297f, 24784.363281f },
-		{ -45943.804688f, 10860.839844f, 25316.576172f },
-		{ -45831.105469f, 9256.556641f, 25354.216797f },
-		{ -46629.894531f, 8519.644531f, 25874.443359f },
-		{ -47088.066406f, 8320.338867f, 25955.308594f },
-		{ -47499.886719f, 8334.212891f, 25955.656250f },
-		{ -47514.558594f, 8691.642578f, 26062.753906f },
-		{ -47521.753906f, 9493.828125f, 26070.611328f },
+		{ -47521.730469f, 11744.547852f, 24763.412109f},
+		{ -46791.832031f, 11742.782227f, 24763.412109f },
+		{ -45762.117188f, 10651.275391f, 25357.097656f},
+		{ -45815.722656f, 9348.145508f, 25357.099609f },
+		{ -46900.500000f, 8277.464844f, 25958.701172f },
+		{ -47517.648438f, 8415.229492f, 25958.701172f },
+		{ -47526.097656f, 9493.048828f, 26072.783203f },
 	})));
 
 	NaksunScriptF13(script);
@@ -427,6 +406,7 @@ void bot::BotMain(LPVOID param) {
 	bns::Bns *bns_instance = bns::Bns::getInstance();
 	hook::SetupHooks();
 	bns_instance->SkipCutscene(true);
+	bns_instance->RefreshPlayerAddress();
 	// Using WinAPI thread because bns doesn't like C++11.:(
 	// But somehow we can use std::lock_guard :thinking:.
 	// Anyways, just don't use std::thread.
@@ -442,28 +422,13 @@ void bot::BotMain(LPVOID param) {
 	while (bot::GetState() != bot::Off) {
 
 		if (GetAsyncKeyState(VK_NUMPAD0)) {
-			printf("lalilu\n");
-			X();
+			auto coord = bns_instance->GetPlayerCoord();
+			printf("{ %f, %f, %f },\n", coord.x, coord.y, coord.z);
 			Sleep(500);
-			Z();
-			Sleep(500);
-			F();
-			Sleep(500);
-			F();
-			Sleep(500);
-			F();
-			Sleep(500);
-			LMB();
-			Sleep(500);
-			One();
-			Sleep(500);
-			Three();
 		}
 		if (GetAsyncKeyState(VK_NUMPAD1)) {
-			auto nak = new BuyEntranceTicketF9();
-			nak->Execute();
+			bns_instance->RefreshPlayerAddress();
 			Sleep(500);
-			delete nak;
 		}
 
 		while (bot::GetState() == bot::Running) {
@@ -540,5 +505,6 @@ void bot::BotMain(LPVOID param) {
 	printf("[BOT] Waiting for Controller to quit.\n");
 	WaitForSingleObject(controller_thread, INFINITE);
 	CloseHandle(controller_thread);
+	Sleep(1000);
 	printf("[BOT] Quitting.\n");
 }

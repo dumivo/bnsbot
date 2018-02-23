@@ -298,12 +298,12 @@ DWORD WINAPI MainThread(LPVOID param) {
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 	if (fdwReason == DLL_PROCESS_ATTACH) {
-		CreateThread(0, 0, MainThread, hinstDLL, 0, 0);
-
 		DisableThreadLibraryCalls(hinstDLL);
+		CreateThread(0, 0, MainThread, hinstDLL, 0, 0);
 	}
-	else if (fdwReason == DLL_PROCESS_ATTACH) {
+	else if (fdwReason == DLL_PROCESS_DETACH) {
 		FreeConsole();
+		FreeLibraryAndExitThread((HMODULE)hinstDLL, 0);
 	}
 
 	return true;
