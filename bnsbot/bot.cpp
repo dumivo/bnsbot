@@ -416,7 +416,7 @@ void bot::BotMain(LPVOID param) {
 
 	uintptr_t last_player = 0;
 	uintptr_t current_player = 0;
-	const int f9_every_f13 = 8;
+	const int f9_every_f13 = 12;
 	const bool mouse_spam = false;
 	int f13_counter = 0;
 	while (bot::GetState() != bot::Off) {

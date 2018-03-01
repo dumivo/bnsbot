@@ -123,15 +123,25 @@ bool Path::Execute() {
 		float distance = coord::GetDistance(last_pos_, element);
 		float time_to_sleep = (distance / velocity);
 		printf("Destination in %fs\n", time_to_sleep);
-		Sleep((int) (time_to_sleep * 1000));
+		if (isnan(time_to_sleep)) {
+			printf("time to sleep is nan\n");
+			Sleep(10000);
+		}
+		else {
+			Sleep((int)(time_to_sleep * 1000 + 100));
+		}
+		
 
 		// Check if we're actually at our destination
 		// Loading screens somehow trigger the arrived dst flag..
 		// We assume that you give us paths without obstacles so this here
 		// below should only be for loading screens
 		start_coords = bns_instance->GetPlayerCoord();
+		printf("a");
 		distance = coord::GetDistance(start_coords, element);
+		printf("b");
 		if (distance >= 200) {
+			printf("c\n");
 			printf("[PATH] Player has reached destination, but not physically..\nDistance"
 				"is %f\n", distance);
 			retry = true;
@@ -146,6 +156,7 @@ bool Path::Execute() {
 			}
 			else {
 				stuck_counter++;
+				printf("d\n");
 			}
 			
 		}

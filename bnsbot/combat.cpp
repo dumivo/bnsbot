@@ -76,19 +76,13 @@ bool bot::Combat::Execute() {
 		// Don't spam too much fucker or else the client will completely shut down man..
 		F();
 		if (milliseconds_passed >= 150) {
-			X();
-			Z();
-			//F();
 			milliseconds_passed = 0;
 			start_time = clock();
 		}
 		Sleep(50);
 		milliseconds_passed = (clock() - start_time_timeout) / (CLOCKS_PER_SEC / 1000);
 	}
-	bns_instance->SendKeyUpEasy(bnskey::Three);
-	bns_instance->SendKeyUpEasy(bnskey::X);
-	bns_instance->SendKeyUpEasy(bnskey::Z);
-	bns_instance->SendKeyUpEasy(bnskey::F);
+	
 
 
 #if defined (COMBAT_SHOW_DEBUG_MESSAGES)
@@ -127,6 +121,10 @@ bool bot::CombatSpin::Execute() {
 #if defined (COMBAT_SHOW_DEBUG_MESSAGES)
 	printf("[COMBAT] Spamming Tab done.\n");
 #endif
+	bns_instance->SendKeyUpEasy(bnskey::Three);
+	bns_instance->SendKeyUpEasy(bnskey::X);
+	bns_instance->SendKeyUpEasy(bnskey::Z);
+	bns_instance->SendKeyUpEasy(bnskey::F);
 	return false;
 }
 
